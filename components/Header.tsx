@@ -16,7 +16,7 @@ const navigationItems = [
   { name: "Partners", href: "/partners" },
   { name: "News", href: "/news" },
   { name: "Contact", href: "/contact" },
-  // { name: "Apply", href: "/apply" },
+  { name: "Apply", href: "/apply" },
 ];
 
 export function Header() {
@@ -95,21 +95,7 @@ export function Header() {
               </Button>
             </motion.div>
 
-            {/* Apply Button */}
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.5 }}>
-              <Button
-                size='sm'
-                variant={"outline"}
-                className='rounded-xl px-4 font-semibold bg-linear-to-r from-primary to-primary/70 shadow-lg hover:shadow-xl transition-all duration-300'
-                asChild>
-                <Link href='/apply'>Apply</Link>
-              </Button>
-            </motion.div>
+        
 
             {/* Donate Button */}
             <motion.div
