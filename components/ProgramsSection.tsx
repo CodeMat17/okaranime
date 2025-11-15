@@ -150,7 +150,7 @@ export function ProgramsSection() {
                   </p>
 
                   {/* Features List */}
-                  <div className='space-y-3 mb-8'>
+                  <div className='space-y-3'>
                     {program.features.map((feature, featureIndex) => (
                       <motion.div
                         key={feature}
@@ -169,7 +169,7 @@ export function ProgramsSection() {
                     ))}
                   </div>
 
-                  <motion.div
+                  {/* <motion.div
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}>
                     <Button
@@ -179,7 +179,7 @@ export function ProgramsSection() {
                       Explore Program
                       <ArrowRight className='ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300' />
                     </Button>
-                  </motion.div>
+                  </motion.div> */}
                 </CardContent>
               </Card>
             </motion.div>

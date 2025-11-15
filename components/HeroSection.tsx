@@ -7,7 +7,7 @@ import Image from "next/image";
 
 export function HeroSection() {
   return (
-    <section className='relative min-h-screen flex items-center justify-center overflow-hidden bg-linear-to-br from-slate-50 via-blue-50 to-teal-50 dark:from-slate-950 dark:via-blue-950 dark:to-teal-950 px-4 sm:px-6 lg:px-8 pb-8 sm:pb-12 lg:pb-16 pt-20 sm:pt-24 lg:pt-28'>
+    <section className='relative min-h-screen flex items-center justify-center overflow-hidden bg-linear-to-br from-slate-50 via-blue-50 to-teal-50 dark:from-slate-950 dark:via-blue-950 dark:to-teal-950 px-4 sm:px-6 lg:px-8 pb-8 sm:pb-12 lg:pb-16 pt-24 lg:pt-28'>
       {/* Animated Background Elements - Mobile Optimized */}
       <div className='absolute inset-0 overflow-hidden'>
         <motion.div

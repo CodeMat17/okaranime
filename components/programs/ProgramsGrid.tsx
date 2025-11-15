@@ -15,7 +15,6 @@ import {
   Heart,
   Star,
   ArrowRight,
-  Calendar,
   MapPin,
   Clock,
 } from "lucide-react";
@@ -215,7 +214,7 @@ export function ProgramsGrid() {
                   </div>
 
                   {/* Features List */}
-                  <div className='space-y-2 mb-6'>
+                  <div className='space-y-2'>
                     <h4 className='font-semibold text-sm text-foreground'>
                       Program Features:
                     </h4>
@@ -231,18 +230,7 @@ export function ProgramsGrid() {
                     </div>
                   </div>
 
-                  {/* CTA Button */}
-                  <motion.div
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}>
-                    <Button
-                      variant='outline'
-                      size='sm'
-                      className='w-full group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-all duration-300 font-semibold'>
-                      Learn More
-                      <ArrowRight className='ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300' />
-                    </Button>
-                  </motion.div>
+                
                 </CardContent>
               </Card>
             </motion.div>

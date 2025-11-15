@@ -4,8 +4,18 @@ const nextConfig: NextConfig = {
   /* config options here */
   reactCompiler: true,
   images: {
-    domains: ["images.unsplash.com", "api.placeholder.com"],
-    formats: ["image/avif", "image/webp"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+        pathname: "**",
+      },
+      {
+        protocol: "https",
+        hostname: "api.placeholder.com",
+        pathname: "**",
+      },
+    ],
   },
   experimental: {
     optimizeCss: true,
