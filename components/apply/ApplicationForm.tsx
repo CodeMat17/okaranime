@@ -17,6 +17,12 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { AlertCircle, CheckCircle2, Send } from "lucide-react";
+import {
+  nigerianStatesWithLGA,
+  programOptions,
+  skillOptions,
+  NigerianState,
+} from "@/data/nigerianStatesData";
 
 interface ApplicationFormData {
   // Personal Information
@@ -28,6 +34,8 @@ interface ApplicationFormData {
   disabilitySpecification: string;
   homeAddress: string;
   stateOfOrigin: string;
+  lga: string;
+  community: string;
   email: string;
   phoneNumber: string;
 
@@ -49,75 +57,6 @@ interface ApplicationFormData {
   agreeToDataProcessing: boolean;
 }
 
-const nigerianStates = [
-  "Abia",
-  "Adamawa",
-  "Akwa Ibom",
-  "Anambra",
-  "Bauchi",
-  "Bayelsa",
-  "Benue",
-  "Borno",
-  "Cross River",
-  "Delta",
-  "Ebonyi",
-  "Edo",
-  "Ekiti",
-  "Enugu",
-  "Federal Capital Territory",
-  "Gombe",
-  "Imo",
-  "Jigawa",
-  "Kaduna",
-  "Kano",
-  "Katsina",
-  "Kebbi",
-  "Kogi",
-  "Kwara",
-  "Lagos",
-  "Nasarawa",
-  "Niger",
-  "Ogun",
-  "Ondo",
-  "Osun",
-  "Oyo",
-  "Plateau",
-  "Rivers",
-  "Sokoto",
-  "Taraba",
-  "Yobe",
-  "Zamfara",
-];
-
-const programOptions = [
-  "Youth Sustainability Program",
-  "Women's Skill Acquisition",
-  "Talent Discovery Program",
-  "All Programs",
-  "Not Sure - Need Guidance",
-];
-
-const skillOptions = [
-  "Digital Marketing",
-  "Web Development",
-  "Fashion Design",
-  "Hair Dressing",
-  "Makeup Artistry",
-  "Photography",
-  "Videography",
-  "Graphic Design",
-  "Agriculture",
-  "Catering",
-  "Baking",
-  "Tailoring",
-  "Shoe Making",
-  "Wood Work",
-  "Metal Work",
-  "Electrical Work",
-  "Plumbing",
-  "Other",
-];
-
 export function ApplicationForm() {
   const [formData, setFormData] = useState<ApplicationFormData>({
     title: "",
@@ -128,6 +67,8 @@ export function ApplicationForm() {
     disabilitySpecification: "",
     homeAddress: "",
     stateOfOrigin: "",
+    lga: "",
+    community: "",
     email: "",
     phoneNumber: "",
     hasConviction: "",
@@ -147,11 +88,28 @@ export function ApplicationForm() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState("");
 
+  // Get LGAs based on selected state
+  const getLgasForState = (stateName: string): string[] => {
+    const state = nigerianStatesWithLGA.find(
+      (s: NigerianState) => s.name === stateName
+    );
+    return state ? state.lgas : [];
+  };
+
   const handleChange = (
     field: keyof ApplicationFormData,
     value: string | boolean
   ) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleStateChange = (state: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      stateOfOrigin: state,
+      lga: "", // Reset LGA when state changes
+      community: "", // Reset community when state changes
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -170,7 +128,10 @@ export function ApplicationForm() {
       !formData.firstName ||
       !formData.surname ||
       !formData.email ||
-      !formData.phoneNumber
+      !formData.phoneNumber ||
+      !formData.stateOfOrigin ||
+      !formData.lga ||
+      !formData.community
     ) {
       setError("Please fill in all required fields");
       setIsSubmitting(false);
@@ -183,7 +144,6 @@ export function ApplicationForm() {
       console.log("Application submitted:", formData);
       setIsSubmitted(true);
     } catch (err) {
-        console.log('Error Msg:  ', err)
       setError("Failed to submit application. Please try again.");
     } finally {
       setIsSubmitting(false);
@@ -206,14 +166,16 @@ export function ApplicationForm() {
               </div>
             </div>
 
-            <h2 className='text-3xl font-black mb-4'>Application Submitted!</h2>
+            <h2 className='text-3xl font-black mb-4 text-slate-900 dark:text-white'>
+              Application Submitted!
+            </h2>
 
-            <p className='text-muted-foreground mb-6 leading-relaxed max-w-md mx-auto'>
+            <p className='text-slate-600 dark:text-slate-300 mb-6 leading-relaxed max-w-md mx-auto'>
               Thank you for applying to OKARANIME HERITAGE FOUNDATION.
               We&apos;ve received your application and will review it carefully.
             </p>
 
-            <div className='space-y-3 text-sm text-muted-foreground mb-8 max-w-md mx-auto'>
+            <div className='space-y-3 text-sm text-slate-600 dark:text-slate-300 mb-8 max-w-md mx-auto'>
               <p>📧 A confirmation has been sent to {formData.email}</p>
               <p>⏰ We&apos;ll contact you within 5-7 business days</p>
               <p>📞 Ensure your phone number is active for follow-up</p>
@@ -233,6 +195,8 @@ export function ApplicationForm() {
                     disabilitySpecification: "",
                     homeAddress: "",
                     stateOfOrigin: "",
+                    lga: "",
+                    community: "",
                     email: "",
                     phoneNumber: "",
                     hasConviction: "",
@@ -261,6 +225,8 @@ export function ApplicationForm() {
     );
   }
 
+  const currentStateLgas = getLgasForState(formData.stateOfOrigin);
+
   return (
     <section
       id='application-form'
@@ -272,10 +238,10 @@ export function ApplicationForm() {
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
           className='text-center mb-12 lg:mb-16'>
-          <h2 className='text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl mb-6'>
+          <h2 className='text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl mb-6 text-slate-900 dark:text-white'>
             Application <span className='text-primary'>Form</span>
           </h2>
-          <p className='text-xl text-muted-foreground max-w-3xl mx-auto'>
+          <p className='text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto'>
             Fill out the form below to apply for our empowerment programs. All
             fields marked with * are required.
           </p>
@@ -286,65 +252,102 @@ export function ApplicationForm() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
           viewport={{ once: true }}
-          className='bg-slate-50 dark:bg-slate-800 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg'>
+          className='bg-slate-50 dark:bg-slate-800 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg border border-slate-200 dark:border-slate-700'>
           {error && (
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className='flex items-center gap-3 p-4 mb-6 rounded-lg bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400'>
+              className='flex items-center gap-3 p-4 mb-6 rounded-lg bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 border border-red-200 dark:border-red-800'>
               <AlertCircle className='h-5 w-5' />
-              <span>{error}</span>
+              <span className='font-medium'>{error}</span>
             </motion.div>
           )}
 
           <form onSubmit={handleSubmit} className='space-y-8'>
             {/* Personal Information Section */}
             <div className='space-y-6'>
-              <h3 className='text-2xl font-black border-b-2 border-primary/20 pb-2'>
+              <h3 className='text-2xl font-black border-b-2 border-primary/20 pb-2 text-slate-900 dark:text-white'>
                 Personal Information
               </h3>
 
               <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
                 {/* Title */}
                 <div className='space-y-2'>
-                  <Label htmlFor='title'>Title *</Label>
+                  <Label
+                    htmlFor='title'
+                    className='text-slate-700 dark:text-slate-300 font-medium'>
+                    Title *
+                  </Label>
                   <Select
                     value={formData.title}
                     onValueChange={(value) => handleChange("title", value)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder='Select title' />
+                    <SelectTrigger className='bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white hover:border-slate-400 dark:hover:border-slate-500'>
+                      <SelectValue
+                        placeholder='Select title'
+                        className='text-slate-500 dark:text-slate-400'
+                      />
                     </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value='Mr'>Mr</SelectItem>
-                      <SelectItem value='Mrs'>Mrs</SelectItem>
-                      <SelectItem value='Miss'>Miss</SelectItem>
-                      <SelectItem value='Dr'>Dr</SelectItem>
-                      <SelectItem value='Prof'>Prof</SelectItem>
+                    <SelectContent className='bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-600'>
+                      <SelectItem
+                        value='Mr'
+                        className='text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800'>
+                        Mr
+                      </SelectItem>
+                      <SelectItem
+                        value='Mrs'
+                        className='text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800'>
+                        Mrs
+                      </SelectItem>
+                      <SelectItem
+                        value='Miss'
+                        className='text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800'>
+                        Miss
+                      </SelectItem>
+                      <SelectItem
+                        value='Dr'
+                        className='text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800'>
+                        Dr
+                      </SelectItem>
+                      <SelectItem
+                        value='Prof'
+                        className='text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800'>
+                        Prof
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
                 {/* First Name */}
                 <div className='space-y-2'>
-                  <Label htmlFor='firstName'>First Name *</Label>
+                  <Label
+                    htmlFor='firstName'
+                    className='text-slate-700 dark:text-slate-300 font-medium'>
+                    First Name *
+                  </Label>
                   <Input
                     id='firstName'
                     value={formData.firstName}
                     onChange={(e) => handleChange("firstName", e.target.value)}
                     required
                     placeholder='Enter your first name'
+                    className='bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:border-primary focus:ring-primary'
                   />
                 </div>
 
                 {/* Surname */}
                 <div className='space-y-2'>
-                  <Label htmlFor='surname'>Surname *</Label>
+                  <Label
+                    htmlFor='surname'
+                    className='text-slate-700 dark:text-slate-300 font-medium'>
+                    Surname *
+                  </Label>
                   <Input
                     id='surname'
                     value={formData.surname}
                     onChange={(e) => handleChange("surname", e.target.value)}
                     required
                     placeholder='Enter your surname'
+                    className='bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:border-primary focus:ring-primary'
                   />
                 </div>
               </div>
@@ -352,18 +355,39 @@ export function ApplicationForm() {
               <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
                 {/* Gender */}
                 <div className='space-y-2'>
-                  <Label htmlFor='gender'>Gender *</Label>
+                  <Label
+                    htmlFor='gender'
+                    className='text-slate-700 dark:text-slate-300 font-medium'>
+                    Gender *
+                  </Label>
                   <Select
                     value={formData.gender}
                     onValueChange={(value) => handleChange("gender", value)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder='Select gender' />
+                    <SelectTrigger className='bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white hover:border-slate-400 dark:hover:border-slate-500'>
+                      <SelectValue
+                        placeholder='Select gender'
+                        className='text-slate-500 dark:text-slate-400'
+                      />
                     </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value='Male'>Male</SelectItem>
-                      <SelectItem value='Female'>Female</SelectItem>
-                      <SelectItem value='Other'>Other</SelectItem>
-                      <SelectItem value='Prefer not to say'>
+                    <SelectContent className='bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-600'>
+                      <SelectItem
+                        value='Male'
+                        className='text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800'>
+                        Male
+                      </SelectItem>
+                      <SelectItem
+                        value='Female'
+                        className='text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800'>
+                        Female
+                      </SelectItem>
+                      <SelectItem
+                        value='Other'
+                        className='text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800'>
+                        Other
+                      </SelectItem>
+                      <SelectItem
+                        value='Prefer not to say'
+                        className='text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800'>
                         Prefer not to say
                       </SelectItem>
                     </SelectContent>
@@ -372,24 +396,36 @@ export function ApplicationForm() {
 
                 {/* Disability */}
                 <div className='space-y-4'>
-                  <Label>Do you have any disability? *</Label>
+                  <Label className='text-slate-700 dark:text-slate-300 font-medium'>
+                    Do you have any disability? *
+                  </Label>
                   <RadioGroup
                     value={formData.hasDisability}
                     onValueChange={(value) =>
                       handleChange("hasDisability", value)
                     }
-                    className='flex gap-4'>
-                    <div className='flex items-center space-x-2'>
-                      <RadioGroupItem value='yes' id='disability-yes' />
+                    className='flex gap-6'>
+                    <div className='flex items-center space-x-3'>
+                      <RadioGroupItem
+                        value='yes'
+                        id='disability-yes'
+                        className='text-primary border-slate-300 dark:border-slate-600'
+                      />
                       <Label
                         htmlFor='disability-yes'
-                        className='cursor-pointer'>
+                        className='cursor-pointer text-slate-700 dark:text-slate-300 font-normal'>
                         Yes
                       </Label>
                     </div>
-                    <div className='flex items-center space-x-2'>
-                      <RadioGroupItem value='no' id='disability-no' />
-                      <Label htmlFor='disability-no' className='cursor-pointer'>
+                    <div className='flex items-center space-x-3'>
+                      <RadioGroupItem
+                        value='no'
+                        id='disability-no'
+                        className='text-primary border-slate-300 dark:border-slate-600'
+                      />
+                      <Label
+                        htmlFor='disability-no'
+                        className='cursor-pointer text-slate-700 dark:text-slate-300 font-normal'>
                         No
                       </Label>
                     </div>
@@ -399,8 +435,10 @@ export function ApplicationForm() {
                     <motion.div
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: "auto" }}
-                      className='space-y-2'>
-                      <Label htmlFor='disabilitySpecification'>
+                      className='space-y-2 pt-2'>
+                      <Label
+                        htmlFor='disabilitySpecification'
+                        className='text-slate-700 dark:text-slate-300 font-medium'>
                         Please specify your disability
                       </Label>
                       <Input
@@ -413,6 +451,7 @@ export function ApplicationForm() {
                           )
                         }
                         placeholder='Describe your disability'
+                        className='bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:border-primary focus:ring-primary'
                       />
                     </motion.div>
                   )}
@@ -421,7 +460,11 @@ export function ApplicationForm() {
 
               {/* Home Address */}
               <div className='space-y-2'>
-                <Label htmlFor='homeAddress'>Home Address *</Label>
+                <Label
+                  htmlFor='homeAddress'
+                  className='text-slate-700 dark:text-slate-300 font-medium'>
+                  Home Address *
+                </Label>
                 <Textarea
                   id='homeAddress'
                   value={formData.homeAddress}
@@ -429,34 +472,106 @@ export function ApplicationForm() {
                   required
                   placeholder='Enter your complete home address'
                   rows={3}
+                  className='bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:border-primary focus:ring-primary resize-none'
                 />
               </div>
 
-              <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+              {/* State, LGA, and Community */}
+              <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
                 {/* State of Origin */}
                 <div className='space-y-2'>
-                  <Label htmlFor='stateOfOrigin'>State of Origin *</Label>
+                  <Label
+                    htmlFor='stateOfOrigin'
+                    className='text-slate-700 dark:text-slate-300 font-medium'>
+                    State of Origin *
+                  </Label>
                   <Select
                     value={formData.stateOfOrigin}
-                    onValueChange={(value) =>
-                      handleChange("stateOfOrigin", value)
-                    }>
-                    <SelectTrigger>
-                      <SelectValue placeholder='Select your state' />
+                    onValueChange={handleStateChange}>
+                    <SelectTrigger className='bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white hover:border-slate-400 dark:hover:border-slate-500'>
+                      <SelectValue
+                        placeholder='Select your state'
+                        className='text-slate-500 dark:text-slate-400'
+                      />
                     </SelectTrigger>
-                    <SelectContent>
-                      {nigerianStates.map((state) => (
-                        <SelectItem key={state} value={state}>
-                          {state}
+                    <SelectContent className='bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-600 max-h-60'>
+                      {nigerianStatesWithLGA.map((state: NigerianState) => (
+                        <SelectItem
+                          key={state.name}
+                          value={state.name}
+                          className='text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800'>
+                          {state.name}
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 </div>
 
-                {/* Email */}
+                {/* LGA */}
                 <div className='space-y-2'>
-                  <Label htmlFor='email'>Email Address *</Label>
+                  <Label
+                    htmlFor='lga'
+                    className='text-slate-700 dark:text-slate-300 font-medium'>
+                    Local Government Area *
+                  </Label>
+                  <Select
+                    value={formData.lga}
+                    onValueChange={(value) => handleChange("lga", value)}
+                    disabled={!formData.stateOfOrigin}>
+                    <SelectTrigger className='bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white hover:border-slate-400 dark:hover:border-slate-500 disabled:opacity-50 disabled:cursor-not-allowed'>
+                      <SelectValue
+                        placeholder={
+                          formData.stateOfOrigin
+                            ? "Select LGA"
+                            : "Select state first"
+                        }
+                        className='text-slate-500 dark:text-slate-400'
+                      />
+                    </SelectTrigger>
+                    <SelectContent className='bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-600 max-h-60'>
+                      {currentStateLgas.map((lga: string) => (
+                        <SelectItem
+                          key={lga}
+                          value={lga}
+                          className='text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800'>
+                          {lga}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {!formData.stateOfOrigin && (
+                    <p className='text-xs text-amber-600 dark:text-amber-400'>
+                      Please select a state first
+                    </p>
+                  )}
+                </div>
+
+                {/* Community */}
+                <div className='space-y-2'>
+                  <Label
+                    htmlFor='community'
+                    className='text-slate-700 dark:text-slate-300 font-medium'>
+                    Community/Town *
+                  </Label>
+                  <Input
+                    id='community'
+                    value={formData.community}
+                    onChange={(e) => handleChange("community", e.target.value)}
+                    required
+                    placeholder='Enter your community or town'
+                    className='bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:border-primary focus:ring-primary'
+                  />
+                </div>
+              </div>
+
+              {/* Email and Phone Number */}
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+                <div className='space-y-2'>
+                  <Label
+                    htmlFor='email'
+                    className='text-slate-700 dark:text-slate-300 font-medium'>
+                    Email Address *
+                  </Label>
                   <Input
                     id='email'
                     type='email'
@@ -464,34 +579,42 @@ export function ApplicationForm() {
                     onChange={(e) => handleChange("email", e.target.value)}
                     required
                     placeholder='your.email@example.com'
+                    className='bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:border-primary focus:ring-primary'
+                  />
+                </div>
+
+                <div className='space-y-2'>
+                  <Label
+                    htmlFor='phoneNumber'
+                    className='text-slate-700 dark:text-slate-300 font-medium'>
+                    Phone Number *
+                  </Label>
+                  <Input
+                    id='phoneNumber'
+                    type='tel'
+                    value={formData.phoneNumber}
+                    onChange={(e) =>
+                      handleChange("phoneNumber", e.target.value)
+                    }
+                    required
+                    placeholder='+234 (0) 123 456 7890'
+                    className='bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:border-primary focus:ring-primary'
                   />
                 </div>
               </div>
-
-              {/* Phone Number */}
-              <div className='space-y-2'>
-                <Label htmlFor='phoneNumber'>Phone Number *</Label>
-                <Input
-                  id='phoneNumber'
-                  type='tel'
-                  value={formData.phoneNumber}
-                  onChange={(e) => handleChange("phoneNumber", e.target.value)}
-                  required
-                  placeholder='+234 (0) 123 456 7890'
-                />
-              </div>
             </div>
 
+            {/* The rest of the form sections remain exactly the same */}
             {/* Background Information Section */}
             <div className='space-y-6'>
-              <h3 className='text-2xl font-black border-b-2 border-primary/20 pb-2'>
+              <h3 className='text-2xl font-black border-b-2 border-primary/20 pb-2 text-slate-900 dark:text-white'>
                 Background Information
               </h3>
 
               <div className='space-y-6'>
                 {/* Conviction */}
                 <div className='space-y-4'>
-                  <Label>
+                  <Label className='text-slate-700 dark:text-slate-300 font-medium'>
                     Have you ever been convicted of any criminal offense? *
                   </Label>
                   <RadioGroup
@@ -499,18 +622,28 @@ export function ApplicationForm() {
                     onValueChange={(value) =>
                       handleChange("hasConviction", value)
                     }
-                    className='flex gap-4'>
-                    <div className='flex items-center space-x-2'>
-                      <RadioGroupItem value='yes' id='conviction-yes' />
+                    className='flex gap-6'>
+                    <div className='flex items-center space-x-3'>
+                      <RadioGroupItem
+                        value='yes'
+                        id='conviction-yes'
+                        className='text-primary border-slate-300 dark:border-slate-600'
+                      />
                       <Label
                         htmlFor='conviction-yes'
-                        className='cursor-pointer'>
+                        className='cursor-pointer text-slate-700 dark:text-slate-300 font-normal'>
                         Yes
                       </Label>
                     </div>
-                    <div className='flex items-center space-x-2'>
-                      <RadioGroupItem value='no' id='conviction-no' />
-                      <Label htmlFor='conviction-no' className='cursor-pointer'>
+                    <div className='flex items-center space-x-3'>
+                      <RadioGroupItem
+                        value='no'
+                        id='conviction-no'
+                        className='text-primary border-slate-300 dark:border-slate-600'
+                      />
+                      <Label
+                        htmlFor='conviction-no'
+                        className='cursor-pointer text-slate-700 dark:text-slate-300 font-normal'>
                         No
                       </Label>
                     </div>
@@ -519,7 +652,7 @@ export function ApplicationForm() {
 
                 {/* Relative in Organization */}
                 <div className='space-y-4'>
-                  <Label>
+                  <Label className='text-slate-700 dark:text-slate-300 font-medium'>
                     Are you related to any employee of OKARANIME Heritage
                     Foundation? *
                   </Label>
@@ -528,16 +661,28 @@ export function ApplicationForm() {
                     onValueChange={(value) =>
                       handleChange("hasRelative", value)
                     }
-                    className='flex gap-4'>
-                    <div className='flex items-center space-x-2'>
-                      <RadioGroupItem value='yes' id='relative-yes' />
-                      <Label htmlFor='relative-yes' className='cursor-pointer'>
+                    className='flex gap-6'>
+                    <div className='flex items-center space-x-3'>
+                      <RadioGroupItem
+                        value='yes'
+                        id='relative-yes'
+                        className='text-primary border-slate-300 dark:border-slate-600'
+                      />
+                      <Label
+                        htmlFor='relative-yes'
+                        className='cursor-pointer text-slate-700 dark:text-slate-300 font-normal'>
                         Yes
                       </Label>
                     </div>
-                    <div className='flex items-center space-x-2'>
-                      <RadioGroupItem value='no' id='relative-no' />
-                      <Label htmlFor='relative-no' className='cursor-pointer'>
+                    <div className='flex items-center space-x-3'>
+                      <RadioGroupItem
+                        value='no'
+                        id='relative-no'
+                        className='text-primary border-slate-300 dark:border-slate-600'
+                      />
+                      <Label
+                        htmlFor='relative-no'
+                        className='cursor-pointer text-slate-700 dark:text-slate-300 font-normal'>
                         No
                       </Label>
                     </div>
@@ -547,8 +692,12 @@ export function ApplicationForm() {
                     <motion.div
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: "auto" }}
-                      className='space-y-2'>
-                      <Label htmlFor='relativeName'>Name of the employee</Label>
+                      className='space-y-2 pt-2'>
+                      <Label
+                        htmlFor='relativeName'
+                        className='text-slate-700 dark:text-slate-300 font-medium'>
+                        Name of the employee
+                      </Label>
                       <Input
                         id='relativeName'
                         value={formData.relativeName}
@@ -556,6 +705,7 @@ export function ApplicationForm() {
                           handleChange("relativeName", e.target.value)
                         }
                         placeholder="Enter the employee's full name"
+                        className='bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:border-primary focus:ring-primary'
                       />
                     </motion.div>
                   )}
@@ -563,22 +713,34 @@ export function ApplicationForm() {
 
                 {/* Current Enrollment */}
                 <div className='space-y-4'>
-                  <Label>
+                  <Label className='text-slate-700 dark:text-slate-300 font-medium'>
                     Are you currently enrolled at any educational institution? *
                   </Label>
                   <RadioGroup
                     value={formData.isEnrolled}
                     onValueChange={(value) => handleChange("isEnrolled", value)}
-                    className='flex gap-4'>
-                    <div className='flex items-center space-x-2'>
-                      <RadioGroupItem value='yes' id='enrolled-yes' />
-                      <Label htmlFor='enrolled-yes' className='cursor-pointer'>
+                    className='flex gap-6'>
+                    <div className='flex items-center space-x-3'>
+                      <RadioGroupItem
+                        value='yes'
+                        id='enrolled-yes'
+                        className='text-primary border-slate-300 dark:border-slate-600'
+                      />
+                      <Label
+                        htmlFor='enrolled-yes'
+                        className='cursor-pointer text-slate-700 dark:text-slate-300 font-normal'>
                         Yes
                       </Label>
                     </div>
-                    <div className='flex items-center space-x-2'>
-                      <RadioGroupItem value='no' id='enrolled-no' />
-                      <Label htmlFor='enrolled-no' className='cursor-pointer'>
+                    <div className='flex items-center space-x-3'>
+                      <RadioGroupItem
+                        value='no'
+                        id='enrolled-no'
+                        className='text-primary border-slate-300 dark:border-slate-600'
+                      />
+                      <Label
+                        htmlFor='enrolled-no'
+                        className='cursor-pointer text-slate-700 dark:text-slate-300 font-normal'>
                         No
                       </Label>
                     </div>
@@ -587,20 +749,34 @@ export function ApplicationForm() {
 
                 {/* Skills */}
                 <div className='space-y-4'>
-                  <Label>Do you have any existing skills? *</Label>
+                  <Label className='text-slate-700 dark:text-slate-300 font-medium'>
+                    Do you have any existing skills? *
+                  </Label>
                   <RadioGroup
                     value={formData.hasSkills}
                     onValueChange={(value) => handleChange("hasSkills", value)}
-                    className='flex gap-4'>
-                    <div className='flex items-center space-x-2'>
-                      <RadioGroupItem value='yes' id='skills-yes' />
-                      <Label htmlFor='skills-yes' className='cursor-pointer'>
+                    className='flex gap-6'>
+                    <div className='flex items-center space-x-3'>
+                      <RadioGroupItem
+                        value='yes'
+                        id='skills-yes'
+                        className='text-primary border-slate-300 dark:border-slate-600'
+                      />
+                      <Label
+                        htmlFor='skills-yes'
+                        className='cursor-pointer text-slate-700 dark:text-slate-300 font-normal'>
                         Yes
                       </Label>
                     </div>
-                    <div className='flex items-center space-x-2'>
-                      <RadioGroupItem value='no' id='skills-no' />
-                      <Label htmlFor='skills-no' className='cursor-pointer'>
+                    <div className='flex items-center space-x-3'>
+                      <RadioGroupItem
+                        value='no'
+                        id='skills-no'
+                        className='text-primary border-slate-300 dark:border-slate-600'
+                      />
+                      <Label
+                        htmlFor='skills-no'
+                        className='cursor-pointer text-slate-700 dark:text-slate-300 font-normal'>
                         No
                       </Label>
                     </div>
@@ -610,15 +786,18 @@ export function ApplicationForm() {
                     <motion.div
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: "auto" }}
-                      className='space-y-2'>
-                      <Label>Select your skills (select all that apply)</Label>
-                      <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2'>
-                        {skillOptions.map((skill) => (
+                      className='space-y-3 pt-2'>
+                      <Label className='text-slate-700 dark:text-slate-300 font-medium'>
+                        Select your skills (select all that apply)
+                      </Label>
+                      <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3'>
+                        {skillOptions.map((skill: string) => (
                           <div
                             key={skill}
-                            className='flex items-center space-x-2'>
+                            className='flex items-center space-x-3'>
                             <Checkbox
                               id={`skill-${skill}`}
+                              className='text-primary border-slate-300 dark:border-slate-600 data-[state=checked]:bg-primary data-[state=checked]:border-primary'
                               onCheckedChange={(checked) => {
                                 // Handle multiple skill selection
                                 console.log("Skill selected:", skill, checked);
@@ -626,7 +805,7 @@ export function ApplicationForm() {
                             />
                             <Label
                               htmlFor={`skill-${skill}`}
-                              className='text-sm cursor-pointer'>
+                              className='text-sm cursor-pointer text-slate-700 dark:text-slate-300 font-normal'>
                               {skill}
                             </Label>
                           </div>
@@ -639,8 +818,10 @@ export function ApplicationForm() {
                     <motion.div
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: "auto" }}
-                      className='space-y-2'>
-                      <Label htmlFor='desiredSkill'>
+                      className='space-y-2 pt-2'>
+                      <Label
+                        htmlFor='desiredSkill'
+                        className='text-slate-700 dark:text-slate-300 font-medium'>
                         What skill would you like to learn? *
                       </Label>
                       <Select
@@ -648,12 +829,18 @@ export function ApplicationForm() {
                         onValueChange={(value) =>
                           handleChange("desiredSkill", value)
                         }>
-                        <SelectTrigger>
-                          <SelectValue placeholder='Select desired skill' />
+                        <SelectTrigger className='bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white hover:border-slate-400 dark:hover:border-slate-500'>
+                          <SelectValue
+                            placeholder='Select desired skill'
+                            className='text-slate-500 dark:text-slate-400'
+                          />
                         </SelectTrigger>
-                        <SelectContent>
-                          {skillOptions.map((skill) => (
-                            <SelectItem key={skill} value={skill}>
+                        <SelectContent className='bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-600 max-h-60'>
+                          {skillOptions.map((skill: string) => (
+                            <SelectItem
+                              key={skill}
+                              value={skill}
+                              className='text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800'>
                               {skill}
                             </SelectItem>
                           ))}
@@ -667,13 +854,15 @@ export function ApplicationForm() {
 
             {/* Program Information Section */}
             <div className='space-y-6'>
-              <h3 className='text-2xl font-black border-b-2 border-primary/20 pb-2'>
+              <h3 className='text-2xl font-black border-b-2 border-primary/20 pb-2 text-slate-900 dark:text-white'>
                 Program Information
               </h3>
 
               {/* Program Interest */}
               <div className='space-y-2'>
-                <Label htmlFor='programInterest'>
+                <Label
+                  htmlFor='programInterest'
+                  className='text-slate-700 dark:text-slate-300 font-medium'>
                   Which program are you interested in? *
                 </Label>
                 <Select
@@ -681,12 +870,18 @@ export function ApplicationForm() {
                   onValueChange={(value) =>
                     handleChange("programInterest", value)
                   }>
-                  <SelectTrigger>
-                    <SelectValue placeholder='Select program of interest' />
+                  <SelectTrigger className='bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white hover:border-slate-400 dark:hover:border-slate-500'>
+                    <SelectValue
+                      placeholder='Select program of interest'
+                      className='text-slate-500 dark:text-slate-400'
+                    />
                   </SelectTrigger>
-                  <SelectContent>
-                    {programOptions.map((program) => (
-                      <SelectItem key={program} value={program}>
+                  <SelectContent className='bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-600'>
+                    {programOptions.map((program: string) => (
+                      <SelectItem
+                        key={program}
+                        value={program}
+                        className='text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800'>
                         {program}
                       </SelectItem>
                     ))}
@@ -696,7 +891,9 @@ export function ApplicationForm() {
 
               {/* Motivation */}
               <div className='space-y-2'>
-                <Label htmlFor='motivation'>
+                <Label
+                  htmlFor='motivation'
+                  className='text-slate-700 dark:text-slate-300 font-medium'>
                   Why do you want to join this program? What motivates you? *
                 </Label>
                 <Textarea
@@ -706,12 +903,15 @@ export function ApplicationForm() {
                   required
                   placeholder='Explain your motivation for joining this program...'
                   rows={4}
+                  className='bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:border-primary focus:ring-primary resize-none'
                 />
               </div>
 
               {/* Future Goals */}
               <div className='space-y-2'>
-                <Label htmlFor='futureGoals'>
+                <Label
+                  htmlFor='futureGoals'
+                  className='text-slate-700 dark:text-slate-300 font-medium'>
                   What are your future goals and how will this program help you
                   achieve them? *
                 </Label>
@@ -722,28 +922,30 @@ export function ApplicationForm() {
                   required
                   placeholder='Describe your future goals and expectations from this program...'
                   rows={4}
+                  className='bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:border-primary focus:ring-primary resize-none'
                 />
               </div>
             </div>
 
             {/* Terms and Conditions */}
             <div className='space-y-4'>
-              <h3 className='text-2xl font-black border-b-2 border-primary/20 pb-2'>
+              <h3 className='text-2xl font-black border-b-2 border-primary/20 pb-2 text-slate-900 dark:text-white'>
                 Terms & Conditions
               </h3>
 
               <div className='space-y-4'>
-                <div className='flex items-start space-x-2'>
+                <div className='flex items-start space-x-3'>
                   <Checkbox
                     id='agreeToTerms'
                     checked={formData.agreeToTerms}
                     onCheckedChange={(checked: boolean) =>
                       handleChange("agreeToTerms", checked)
                     }
+                    className='text-primary border-slate-300 dark:border-slate-600 data-[state=checked]:bg-primary data-[state=checked]:border-primary mt-1'
                   />
                   <Label
                     htmlFor='agreeToTerms'
-                    className='cursor-pointer text-sm leading-relaxed'>
+                    className='cursor-pointer text-slate-700 dark:text-slate-300 text-sm leading-relaxed font-normal'>
                     I hereby declare that the information provided in this
                     application is true and correct to the best of my knowledge.
                     I understand that any false information may lead to
@@ -751,17 +953,18 @@ export function ApplicationForm() {
                   </Label>
                 </div>
 
-                <div className='flex items-start space-x-2'>
+                <div className='flex items-start space-x-3'>
                   <Checkbox
                     id='agreeToDataProcessing'
                     checked={formData.agreeToDataProcessing}
                     onCheckedChange={(checked: boolean) =>
                       handleChange("agreeToDataProcessing", checked)
                     }
+                    className='text-primary border-slate-300 dark:border-slate-600 data-[state=checked]:bg-primary data-[state=checked]:border-primary mt-1'
                   />
                   <Label
                     htmlFor='agreeToDataProcessing'
-                    className='cursor-pointer text-sm leading-relaxed'>
+                    className='cursor-pointer text-slate-700 dark:text-slate-300 text-sm leading-relaxed font-normal'>
                     I agree to the processing of my personal data for the
                     purpose of this application and future communication
                     regarding OKARANIME HERITAGE FOUNDATION programs.
@@ -778,7 +981,7 @@ export function ApplicationForm() {
               <Button
                 type='submit'
                 size='lg'
-                className='w-full gap-3'
+                className='w-full gap-3 bg-primary hover:bg-primary/90 text-white'
                 disabled={isSubmitting}>
                 {isSubmitting ? (
                   <>
@@ -795,7 +998,7 @@ export function ApplicationForm() {
             </motion.div>
 
             {/* Privacy Notice */}
-            <p className='text-xs text-muted-foreground text-center'>
+            <p className='text-xs text-slate-600 dark:text-slate-400 text-center'>
               🔒 Your information is secure and will only be used for
               application processing purposes. We are committed to protecting
               your privacy.
