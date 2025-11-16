@@ -154,7 +154,7 @@ export function FAQSection() {
               <a href='#contact-form'>Ask Your Question</a>
             </Button>
             <Button size='lg' variant='outline' asChild>
-              <a href='mailto:info@okaranime.org'>Email Support</a>
+              <a href='mailto:email@okaranime.com.ng'>Email Support</a>
             </Button>
           </div>
         </motion.div>

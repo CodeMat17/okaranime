@@ -10,10 +10,10 @@ const locations = [
     id: 1,
     name: "Headquarters Office",
     type: "Main Office",
-    address: "123 Empowerment Street, Victoria Island",
+    address: "123 Empowerment Street,",
     city: "Lagos, Nigeria",
     phone: "+234 (0) 123 456 7890",
-    email: "lagos@okaranime.org",
+    email: "email@okaranime.org",
     hours: "Mon-Fri: 9AM-5PM, Sat: 10AM-2PM",
     description:
       "Our main administrative office where all program coordination and partnership discussions take place.",
@@ -26,15 +26,15 @@ const locations = [
   },
   {
     id: 2,
-    name: "Community Center - Enugu",
+    name: "Community Center - Imo",
     type: "Program Center",
-    address: "45 Heritage Road, Independence Layout",
-    city: "Enugu, Nigeria",
+    address: "5 Okaranime Road",
+    city: "Imo State, Nigeria",
     phone: "+234 (0) 123 456 7891",
-    email: "enugu@okaranime.org",
+    email: "imo@okaranime.org",
     hours: "Mon-Sat: 8AM-4PM",
     description:
-      "Our Eastern regional center focusing on youth empowerment and agricultural programs.",
+      "Our dedicated center focusing on youth empowerment and agricultural programs.",
     services: [
       "Youth Training",
       "Agriculture Programs",
@@ -44,15 +44,15 @@ const locations = [
   },
   {
     id: 3,
-    name: "Women's Empowerment Center - Kano",
+    name: "Women's Empowerment Center - Enugu",
     type: "Specialized Center",
-    address: "78 Progress Avenue, Nassarawa",
-    city: "Kano, Nigeria",
+    address: "45 Heritage Road, Independence Layout",
+    city: "Enugu, Nigeria",
     phone: "+234 (0) 123 456 7892",
-    email: "kano@okaranime.org",
+    email: "enugu@okaranime.org",
     hours: "Sun-Thu: 8AM-4PM",
     description:
-      "Dedicated center for women's empowerment programs and handicraft training.",
+      "Our Eastern regional center for women's empowerment programs and handicraft training.",
     services: [
       "Women's Programs",
       "Handicraft Training",
@@ -96,7 +96,7 @@ export function OfficeLocations() {
               <div className='bg-slate-50 dark:bg-slate-800 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 h-full border-2 border-transparent group-hover:border-primary/20'>
                 {/* Location Header */}
                 <div className='flex items-start gap-4 mb-4'>
-                  <div className='flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-r from-primary to-primary/70 flex-shrink-0'>
+                  <div className='flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-r from-primary to-primary/70 shrink-0'>
                     <MapPin className='h-6 w-6 text-white' />
                   </div>
                   <div>
@@ -117,7 +117,7 @@ export function OfficeLocations() {
                 {/* Contact Details */}
                 <div className='space-y-3 mb-6'>
                   <div className='flex items-center gap-3 text-sm'>
-                    <MapPin className='h-4 w-4 text-primary flex-shrink-0' />
+                    <MapPin className='h-4 w-4 text-primary shrink-0' />
                     <div>
                       <div className='font-medium'>{location.address}</div>
                       <div className='text-muted-foreground'>
@@ -127,7 +127,7 @@ export function OfficeLocations() {
                   </div>
 
                   <div className='flex items-center gap-3 text-sm'>
-                    <Phone className='h-4 w-4 text-primary flex-shrink-0' />
+                    <Phone className='h-4 w-4 text-primary shrink-0' />
                     <a
                       href={`tel:${location.phone}`}
                       className='hover:text-primary transition-colors'>
@@ -136,7 +136,7 @@ export function OfficeLocations() {
                   </div>
 
                   <div className='flex items-center gap-3 text-sm'>
-                    <Mail className='h-4 w-4 text-primary flex-shrink-0' />
+                    <Mail className='h-4 w-4 text-primary shrink-0' />
                     <a
                       href={`mailto:${location.email}`}
                       className='hover:text-primary transition-colors'>
@@ -145,7 +145,7 @@ export function OfficeLocations() {
                   </div>
 
                   <div className='flex items-center gap-3 text-sm'>
-                    <Clock className='h-4 w-4 text-primary flex-shrink-0' />
+                    <Clock className='h-4 w-4 text-primary shrink-0' />
                     <span className='text-muted-foreground'>
                       {location.hours}
                     </span>
@@ -171,7 +171,7 @@ export function OfficeLocations() {
 
                 {/* Action Buttons */}
                 <div className='flex gap-2'>
-                  <Button size='sm' className='flex-1' asChild>
+                  <Button size='sm' className='1' asChild>
                     <a href={`tel:${location.phone}`}>Call Office</a>
                   </Button>
                   <Button size='sm' variant='outline' asChild>
@@ -183,27 +183,7 @@ export function OfficeLocations() {
           ))}
         </div>
 
-        {/* Map Placeholder */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          viewport={{ once: true }}
-          className='mt-12'>
-          <div className='bg-linear-to-r from-primary/10 to-secondary/10 rounded-2xl sm:rounded-3xl p-8 text-center'>
-            <MapPin className='h-12 w-12 text-primary mx-auto mb-4' />
-            <h3 className='text-2xl font-black mb-2'>
-              Interactive Map Coming Soon
-            </h3>
-            <p className='text-muted-foreground max-w-2xl mx-auto mb-6'>
-              We&apos;re working on an interactive map to help you easily find
-              and navigate to all our locations across Nigeria.
-            </p>
-            <Button size='lg' asChild>
-              <a href='#contact-form'>Request Directions</a>
-            </Button>
-          </div>
-        </motion.div>
+     
       </div>
     </section>
   );

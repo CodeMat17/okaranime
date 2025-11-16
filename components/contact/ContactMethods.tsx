@@ -2,47 +2,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Mail, Phone, MapPin, Clock, MessageCircle, Users } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
-const contactMethods = [
-  {
-    icon: Mail,
-    title: "Email Us",
-    description: "Send us an email and we'll get back to you within 24 hours",
-    details: "info@okaranime.org",
-    action: "Send Email",
-    href: "mailto:info@okaranime.org",
-    color: "from-blue-500 to-cyan-500",
-  },
-  {
-    icon: Phone,
-    title: "Call Us",
-    description: "Speak directly with our team during business hours",
-    details: "+234 (0) 123 456 7890",
-    action: "Call Now",
-    href: "tel:+23401234567890",
-    color: "from-green-500 to-emerald-500",
-  },
-  {
-    icon: MapPin,
-    title: "Visit Us",
-    description: "Schedule a visit to our headquarters or community centers",
-    details: "Lagos, Nigeria",
-    action: "Get Directions",
-    href: "#locations",
-    color: "from-amber-500 to-orange-500",
-  },
-  {
-    icon: MessageCircle,
-    title: "Live Chat",
-    description: "Chat with our support team in real-time",
-    details: "Mon-Fri, 9AM-5PM",
-    action: "Start Chat",
-    href: "#chat",
-    color: "from-purple-500 to-violet-500",
-  },
-];
+
 
 const officeHours = [
   { day: "Monday - Friday", hours: "9:00 AM - 5:00 PM" },
@@ -61,16 +22,14 @@ export function ContactMethods() {
           viewport={{ once: true }}
           className='text-center mb-12 lg:mb-16'>
           <h2 className='text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl mb-6'>
-            Multiple Ways to <span className='text-primary'>Connect</span>
+            Office <span className='text-primary'>Hours</span>
           </h2>
           <p className='text-xl text-muted-foreground max-w-3xl mx-auto'>
-            Choose the contact method that works best for you. We&apos;re
-            available through various channels to ensure we can help you
-            effectively.
+            Our team is available during these hours
           </p>
         </motion.div>
 
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 mb-12 lg:mb-16'>
+        {/* <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 mb-12 lg:mb-16'>
           {contactMethods.map((method, index) => (
             <motion.div
               key={method.title}
@@ -105,7 +64,7 @@ export function ContactMethods() {
               </div>
             </motion.div>
           ))}
-        </div>
+        </div> */}
 
         {/* Office Hours */}
         <motion.div
@@ -114,7 +73,7 @@ export function ContactMethods() {
           transition={{ duration: 0.6, delay: 0.4 }}
           viewport={{ once: true }}
           className='bg-linear-to-r from-primary/10 to-secondary/10 rounded-2xl sm:rounded-3xl p-8 max-w-2xl mx-auto'>
-          <div className='flex items-center gap-4 mb-6'>
+          {/* <div className='flex items-center gap-4 mb-6'>
             <div className='flex h-12 w-12 items-center justify-center rounded-xl bg-primary/20 text-primary'>
               <Clock className='h-6 w-6' />
             </div>
@@ -124,7 +83,7 @@ export function ContactMethods() {
                 Our team is available during these hours
               </p>
             </div>
-          </div>
+          </div> */}
 
           <div className='space-y-3'>
             {officeHours.map((schedule, index) => (
