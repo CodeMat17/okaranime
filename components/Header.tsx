@@ -70,8 +70,8 @@ export function Header() {
                   } relative px-2 xl:px-4 py-2 text-sm font-semibold  hover:text-foreground transition-colors group`}>
                   {item.name}
                   <motion.div
-                    className={`absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 ${pathname === item.href ? 'w-full' : 'w-0'}`}
-                    whileHover={{ width: "100%" }}
+                    className={`absolute bottom-0 left-0 h-0.5 bg-primary transition-all duration-300 ${pathname === item.href ? 'w-full' : 'w-0 group-hover:w-full'}`}
+                    // whileHover={{ width: "100%" }}
                   />
                 </Link>
               </motion.div>
