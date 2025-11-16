@@ -51,8 +51,8 @@ export function Footer() {
             className='lg:col-span-2'>
             <Link href='/' className='flex items-center space-x-2 mb-4'>
             
-              <Image alt="logo" width={40} height={40} src="/logo.png"  />
-              <span className={`${creepster.className} text-3xl tracking-wide font-bold`}>OKARANIME</span>
+              <Image alt="logo" width={35} height={35} src="/logo.png"  />
+              <span className={`${creepster.className} text-2xl tracking-wide font-bold`}>OKARANIME</span>
             </Link>
             <p className='text-muted-foreground mb-6 max-w-md'>
               Empowering the next generation through sustainable programs,

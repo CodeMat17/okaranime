@@ -1,14 +1,14 @@
 "use client";
 
-import * as React from "react";
-import Link from "next/link";
-import { motion } from "framer-motion";
-import { Menu, Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { motion } from "framer-motion";
+import { Menu, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
-import LogoComponent from "./LogoComponent";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
+import * as React from "react";
+import LogoComponent from "./LogoComponent";
 
 const navigationItems = [
   { name: "Home", href: "/" },
@@ -27,17 +27,17 @@ export function Header() {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = React.useState(false);
 
- React.useEffect(() => {
-   const handleScroll = () => {
-     setIsScrolled(window.scrollY > 20);
-   };
+  React.useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
 
-   // Check initial scroll position on mount
-   handleScroll();
+    // Check initial scroll position on mount
+    handleScroll();
 
-   window.addEventListener("scroll", handleScroll);
-   return () => window.removeEventListener("scroll", handleScroll);
- }, []);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <motion.header
@@ -70,7 +70,7 @@ export function Header() {
                   } relative px-2 xl:px-4 py-2 text-sm font-semibold  hover:text-foreground transition-colors group`}>
                   {item.name}
                   <motion.div
-                    className={`absolute bottom-0 left-0 w-0 h-0.5 group-hover:w-full bg-primary transition-all duration-300`}
+                    className={`absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 ${pathname === item.href ? 'w-full' : 'w-0'}`}
                     whileHover={{ width: "100%" }}
                   />
                 </Link>
