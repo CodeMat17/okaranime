@@ -1,35 +1,38 @@
 "use client";
 
+import { Creepster } from "next/font/google";
+
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
-  Heart,
-  Mail,
-  Phone,
-  MapPin,
   Facebook,
   Twitter,
   Instagram,
-  Linkedin,
 } from "lucide-react";
+import Image from "next/image";
+
+const creepster = Creepster({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-creepster",
+});
 
 const footerLinks = {
   about: [
-    { name: "Our Story", href: "/about" },
+    { name: "Our Story", href: "/about#our-story" },
     { name: "Mission & Vision", href: "/about#mission" },
+    { name: "Values", href: "/about#values" },
     { name: "Team", href: "/about#team" },
-    { name: "Annual Reports", href: "/about#reports" },
+    { name: "Impact", href: "/about#impact" },
   ],
   programs: [
-    { name: "Youth Empowerment", href: "/programs#youth" },
-    { name: "Women's Empowerment", href: "/programs#women" },
-    { name: "Talent Discovery", href: "/programs#talent" },
-    { name: "How It Works", href: "/how-it-works" },
+    { name: "Our Programs", href: "/programs#programs" },
+    { name: "How Our Programs Works", href: "/programs#benefits" },
+  
   ],
   support: [
     { name: "Donate", href: "/donate" },
-    { name: "Partner", href: "/partners" },
-    { name: "Volunteer", href: "/volunteer" },
+    { name: "Partners", href: "/partners" },
     { name: "Contact", href: "/contact" },
   ],
 };
@@ -47,10 +50,9 @@ export function Footer() {
             viewport={{ once: true }}
             className='lg:col-span-2'>
             <Link href='/' className='flex items-center space-x-2 mb-4'>
-              <div className='flex h-10 w-10 items-center justify-center rounded-full bg-primary'>
-                <Heart className='h-6 w-6 text-primary-foreground' />
-              </div>
-              <span className='text-2xl font-bold'>OKARANIME</span>
+            
+              <Image alt="logo" width={40} height={40} src="/logo.png"  />
+              <span className={`${creepster.className} text-3xl tracking-wide font-bold`}>OKARANIME</span>
             </Link>
             <p className='text-muted-foreground mb-6 max-w-md'>
               Empowering the next generation through sustainable programs,
@@ -58,7 +60,7 @@ export function Footer() {
               the less privileged.
             </p>
             <div className='flex space-x-4'>
-              {[Facebook, Twitter, Instagram, Linkedin].map((Icon, index) => (
+              {[Facebook, Twitter, Instagram].map((Icon, index) => (
                 <motion.a
                   key={index}
                   href='#'

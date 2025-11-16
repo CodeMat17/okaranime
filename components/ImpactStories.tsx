@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Quote, Play, ArrowRight } from "lucide-react";
+import { Quote, ArrowRight } from "lucide-react";
 
 const stories = [
   {
@@ -54,7 +54,7 @@ export function ImpactStories() {
               transition={{ duration: 0.6, delay: index * 0.2 }}
               viewport={{ once: true }}>
               <Card className='border-0 shadow-lg hover:shadow-xl transition-all duration-300 group overflow-hidden'>
-                <div className='relative h-48 bg-gradient-to-br from-primary/20 to-secondary/20'>
+                <div className='relative h-48 bg-linear-to-br from-primary/20 to-secondary/20'>
                   <div className='absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors' />
                   <div className='absolute bottom-4 left-4'>
                     <Quote className='h-8 w-8 text-primary' />

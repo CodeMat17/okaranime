@@ -37,7 +37,7 @@ const values = [
 
 export function ValuesSection() {
   return (
-    <section className='py-16 sm:py-20 lg:py-24 bg-white dark:bg-slate-900 px-4 sm:px-6 lg:px-8'>
+    <section id='values' className='py-16 sm:py-20 lg:py-24 bg-white dark:bg-slate-900 px-4 sm:px-6 lg:px-8'>
       <div className='w-full max-w-6xl mx-auto'>
         <motion.div
           initial={{ opacity: 0, y: 30 }}

@@ -44,7 +44,7 @@ const impactStats = [
 
 export function ProgramBenefits() {
   return (
-    <section className='py-16 sm:py-20 lg:py-24 bg-slate-50 dark:bg-slate-800/50 px-4 sm:px-6 lg:px-8 overflow-hidden'>
+    <section id='benefits' className='py-16 sm:py-20 lg:py-24 bg-slate-50 dark:bg-slate-800/50 px-4 sm:px-6 lg:px-8 overflow-hidden'>
       <div className='w-full max-w-6xl mx-auto'>
         <div className='grid lg:grid-cols-2 gap-12 lg:gap-16 items-center'>
           {/* Benefits Content */}
@@ -76,7 +76,7 @@ export function ProgramBenefits() {
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                   viewport={{ once: true }}
                   className='flex items-start gap-4'>
-                  <div className='flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary flex-shrink-0'>
+                  <div className='flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary shrink-0'>
                     <benefit.icon className='h-6 w-6' />
                   </div>
                   <div>

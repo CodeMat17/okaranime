@@ -3,10 +3,12 @@
 import * as React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Heart, Menu, Sun, Moon } from "lucide-react";
+import { Menu, Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useTheme } from "next-themes";
+import LogoComponent from "./LogoComponent";
+import { usePathname } from "next/navigation";
 
 const navigationItems = [
   { name: "Home", href: "/" },
@@ -22,15 +24,20 @@ const navigationItems = [
 export function Header() {
   const [isOpen, setIsOpen] = React.useState(false);
   const { theme, setTheme } = useTheme();
+  const pathname = usePathname();
   const [isScrolled, setIsScrolled] = React.useState(false);
 
-  React.useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+ React.useEffect(() => {
+   const handleScroll = () => {
+     setIsScrolled(window.scrollY > 20);
+   };
+
+   // Check initial scroll position on mount
+   handleScroll();
+
+   window.addEventListener("scroll", handleScroll);
+   return () => window.removeEventListener("scroll", handleScroll);
+ }, []);
 
   return (
     <motion.header
@@ -44,21 +51,7 @@ export function Header() {
       <div className='w-full  px-4 sm:px-6'>
         <div className='flex h-14 lg:h-16 items-center justify-between'>
           {/* Logo */}
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            className='flex items-center gap-3 shrink-0'>
-            <Link href='/' className='flex items-center space-x-3'>
-              <motion.div
-                whileHover={{ rotate: 360 }}
-                transition={{ duration: 0.6 }}
-                className='flex h-10 w-10 items-center justify-center rounded-2xl bg-linear-to-r from-primary to-primary/70 shadow-lg'>
-                <Heart className='h-5 w-5 text-primary-foreground' />
-              </motion.div>
-              <span className='text-xl font-black bg-linear-to-r from-foreground to-foreground/70 bg-clip-text text-transparent'>
-                OKARANIME
-              </span>
-            </Link>
-          </motion.div>
+          <LogoComponent />
 
           {/* Desktop Navigation */}
           <nav className='hidden lg:flex items-center space-x-1'>
@@ -70,10 +63,14 @@ export function Header() {
                 transition={{ delay: index * 0.1 }}>
                 <Link
                   href={item.href}
-                  className='relative px-2 xl:px-4 py-2 text-sm font-semibold text-foreground/80 hover:text-foreground transition-colors group'>
+                  className={`${
+                    pathname === item.href
+                      ? "text-primary"
+                      : "text-foreground/80"
+                  } relative px-2 xl:px-4 py-2 text-sm font-semibold  hover:text-foreground transition-colors group`}>
                   {item.name}
                   <motion.div
-                    className='absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300'
+                    className={`absolute bottom-0 left-0 w-0 h-0.5 group-hover:w-full bg-primary transition-all duration-300`}
                     whileHover={{ width: "100%" }}
                   />
                 </Link>
@@ -94,8 +91,6 @@ export function Header() {
                 <Moon className='absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100' />
               </Button>
             </motion.div>
-
-        
 
             {/* Donate Button */}
             <motion.div

@@ -33,7 +33,7 @@ const teamMembers = [
 
 export function TeamSection() {
   return (
-    <section className='py-16 sm:py-20 lg:py-24 bg-slate-50 dark:bg-slate-800/50 px-4 sm:px-6 lg:px-8'>
+    <section id="team" className='py-16 sm:py-20 lg:py-24 bg-slate-50 dark:bg-slate-800/50 px-4 sm:px-6 lg:px-8'>
       <div className='w-full max-w-6xl mx-auto'>
         <motion.div
           initial={{ opacity: 0, y: 30 }}

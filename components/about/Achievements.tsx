@@ -14,7 +14,7 @@ const achievements = [
 
 export function Achievements() {
   return (
-    <section className='py-12 sm:py-16 lg:py-20 bg-white dark:bg-slate-900 px-4 sm:px-6 lg:px-8 w-full overflow-hidden'>
+    <section id="impact" className='py-12 sm:py-16 lg:py-20 bg-white dark:bg-slate-900 px-4 sm:px-6 lg:px-8 w-full overflow-hidden'>
       <div className='w-full max-w-6xl mx-auto'>
         <div className='flex flex-col lg:grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center '>
         

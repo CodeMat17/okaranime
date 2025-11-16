@@ -6,7 +6,7 @@ import { Calendar, MapPin, Users, Target } from "lucide-react";
 
 export function OurStory() {
   return (
-    <section className='py-16 sm:py-20 lg:py-24 bg-white dark:bg-slate-900 px-4 sm:px-6 lg:px-8 overflow-hidden'>
+    <section id="our-story" className='py-16 sm:py-20 lg:py-24 bg-white dark:bg-slate-900 px-4 sm:px-6 lg:px-8 overflow-hidden'>
       <div className='w-full max-w-6xl mx-auto'>
         <div className='grid lg:grid-cols-2 gap-12 lg:gap-16 items-center'>
           {/* Text Content */}
