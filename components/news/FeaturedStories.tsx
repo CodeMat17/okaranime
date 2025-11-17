@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Calendar, User, ArrowRight, Eye, Heart, Newspaper } from "lucide-react";
+import Link from "next/link";
 
 const featuredStories = [
   {
@@ -167,10 +168,10 @@ export function FeaturedStories() {
           viewport={{ once: true }}
           className='text-center mt-12'>
           <Button size='lg' className='gap-3' asChild>
-            <a href='/news/all'>
+            <Link href='/news/all'>
               View All Stories
               <ArrowRight className='h-5 w-5' />
-            </a>
+            </Link>
           </Button>
         </motion.div>
       </div>

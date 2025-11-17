@@ -96,7 +96,7 @@ const newsArticles = [
 export function NewsGrid() {
   return (
     <section className='py-16 sm:py-20 lg:py-24 bg-white dark:bg-slate-900 px-4 sm:px-6 lg:px-8'>
-      <div className='w-full max-w-7xl mx-auto'>
+      <div className='w-full max-w-6xl mx-auto'>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -137,9 +137,9 @@ export function NewsGrid() {
                   {/* Article Content */}
                   <div className='p-6 flex-1 flex flex-col'>
                     {/* Category */}
-                    <div className='inline-flex items-center gap-1 px-2 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium mb-3 self-start'>
+                    {/* <div className='inline-flex items-center gap-1 px-2 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium mb-3 self-start'>
                       {article.category}
-                    </div>
+                    </div> */}
 
                     {/* Title */}
                     <h3 className='text-lg font-black mb-3 group-hover:text-primary transition-colors line-clamp-2'>
@@ -147,12 +147,12 @@ export function NewsGrid() {
                     </h3>
 
                     {/* Excerpt */}
-                    <p className='text-muted-foreground text-sm mb-4 leading-relaxed flex-1'>
+                    <p className='text-muted-foreground text-sm mb-4 leading-relaxed flex-1 line-clamp-3'>
                       {article.excerpt}
                     </p>
 
                     {/* Tags */}
-                    <div className='flex flex-wrap gap-1 mb-4'>
+                    {/* <div className='flex flex-wrap gap-1 mb-4'>
                       {article.tags.map((tag, tagIndex) => (
                         <span
                           key={tagIndex}
@@ -161,31 +161,21 @@ export function NewsGrid() {
                           {tag}
                         </span>
                       ))}
-                    </div>
+                    </div> */}
 
                     {/* Meta Information */}
                     <div className='space-y-2 mb-4'>
                       <div className='flex items-center gap-4 text-xs text-muted-foreground'>
-                        <div className='flex items-center gap-1'>
+                        {/* <div className='flex items-center gap-1'>
                           <User className='h-3 w-3' />
                           <span>{article.author}</span>
-                        </div>
+                        </div> */}
                         <div className='flex items-center gap-1'>
                           <Calendar className='h-3 w-3' />
                           <span>{article.date}</span>
                         </div>
                       </div>
-                      <div className='flex items-center gap-4 text-xs text-muted-foreground'>
-                        <div className='flex items-center gap-1'>
-                          <Eye className='h-3 w-3' />
-                          <span>{article.views}</span>
-                        </div>
-                        <div className='flex items-center gap-1'>
-                          <Heart className='h-3 w-3' />
-                          <span>{article.likes}</span>
-                        </div>
-                        <span>{article.readTime}</span>
-                      </div>
+                   
                     </div>
 
                     {/* Read More */}
