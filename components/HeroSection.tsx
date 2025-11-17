@@ -119,9 +119,9 @@ export function HeroSection() {
                 <Button
                   size='lg'
                   variant='outline'
-                  className='gap-2 sm:gap-3 text-base sm:text-lg w-full sm:w-auto px-6 sm:px-8 py-4 sm:py-6 font-semibold border-2'
+                  className='gap-2 sm:gap-3 text-base sm:text-lg w-full sm:w-auto px-6 sm:px-8 py-4 sm:py-6 font-semibold border-2 hover:text-white dark:hover:text-gray-400'
                   asChild>
-                  <a href='/about'>
+                  <a href='/about#mission'>
                     Our Mission
                     <Play className='h-4 w-4 sm:h-5 sm:w-5' />
                   </a>

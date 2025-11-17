@@ -83,7 +83,7 @@ export function OfficeLocations() {
           </p>
         </motion.div>
 
-        <div className='grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8'>
+        <div className='grid grid-cols-1 lg:grid-cols-3 gap-4'>
           {locations.map((location, index) => (
             <motion.div
               key={location.id}
