@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Calendar, User, ArrowRight, Eye, Heart, Tag, Newspaper } from "lucide-react";
+import Link from "next/link";
 
 const newsArticles = [
   {
@@ -231,7 +232,7 @@ export function NewsGrid() {
           viewport={{ once: true }}
           className='text-center mt-8'>
           <Button variant='ghost' asChild>
-            <a href='/news/archive'>Browse News Archive</a>
+            <Link href='/news/archive'>Browse News Archive</Link>
           </Button>
         </motion.div>
       </div>
