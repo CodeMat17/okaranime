@@ -32,7 +32,7 @@ const footerLinks = {
   ],
   support: [
     { name: "Donate", href: "/donate" },
-    { name: "Partners", href: "/partners" },
+    // { name: "Partners", href: "/partners" },
     { name: "Contact", href: "/contact" },
   ],
 };
