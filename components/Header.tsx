@@ -13,9 +13,10 @@ import LogoComponent from "./LogoComponent";
 const navigationItems = [
   { name: "Home", href: "/" },
   { name: "About", href: "/about" },
-  { name: "Programs", href: "/programs" },
   { name: "Impact", href: "/impact" },
-  { name: "Partners", href: "/partners" },
+  { name: "Programs", href: "/programs" },
+
+  // { name: "Partners", href: "/partners" },
   { name: "News", href: "/news" },
   { name: "Team", href: "/team" },
   { name: "Contact", href: "/contact" },

@@ -34,12 +34,21 @@ export const metadata: Metadata = {
     title: "OKARANIME HERITAGE FOUNDATION",
     description: "Empowering the Next Generation Through Sustainable Programs",
     siteName: "OKARANIME HERITAGE FOUNDATION",
+    images: [
+      {
+        url: "/opengraph-image.jpg", // This will be served from the public folder
+        width: 1200,
+        height: 630,
+        alt: "OKARANIME HERITAGE FOUNDATION - Empowering Communities",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "OKARANIME HERITAGE FOUNDATION",
     description: "Empowering the Next Generation Through Sustainable Programs",
     creator: "@okaranime",
+    images: ["/opengraph-image.jpg"],
   },
   robots: {
     index: true,

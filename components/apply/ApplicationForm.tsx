@@ -16,13 +16,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { AlertCircle, CheckCircle2, Send, XCircle } from "lucide-react";
+import { AlertCircle, CheckCircle, CheckCircle2, Send, XCircle } from "lucide-react";
 import {
   nigerianStatesWithLGA,
   programOptions,
   skillOptions,
   NigerianState,
 } from "@/data/nigerianStatesData";
+import { toast } from "sonner";
 
 interface ApplicationFormData {
   // Personal Information
@@ -364,56 +365,130 @@ export function ApplicationForm() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+ const handleSubmit = async (e: React.FormEvent) => {
+   e.preventDefault();
 
-    // Mark all fields as touched
-    const allFields = [
-      "title",
-      "firstName",
-      "surname",
-      "gender",
-      "hasDisability",
-      "homeAddress",
-      "stateOfOrigin",
-      "lga",
-      "community",
-      "email",
-      "phoneNumber",
-      "hasConviction",
-      "hasRelative",
-      "isEnrolled",
-      "hasSkills",
-      "programInterest",
-      "motivation",
-      "futureGoals",
-    ];
-    setTouched(new Set(allFields));
+   // Mark all fields as touched
+   const allFields = [
+     "title",
+     "firstName",
+     "surname",
+     "gender",
+     "hasDisability",
+     "homeAddress",
+     "stateOfOrigin",
+     "lga",
+     "community",
+     "email",
+     "phoneNumber",
+     "hasConviction",
+     "hasRelative",
+     "isEnrolled",
+     "hasSkills",
+     "programInterest",
+     "motivation",
+     "futureGoals",
+     "agreeToTerms",
+     "agreeToDataProcessing",
+   ];
+   setTouched(new Set(allFields));
 
-    // Validate form
-    if (!validateForm()) {
-      // Scroll to first error
-      const firstErrorField = Object.keys(errors)[0];
-      const element = document.getElementById(firstErrorField);
-      element?.scrollIntoView({ behavior: "smooth", block: "center" });
-      return;
-    }
+   // Validate form
+   if (!validateForm()) {
+     // Scroll to first error
+     const firstErrorField = Object.keys(errors)[0];
+     const element = document.getElementById(firstErrorField);
+     element?.scrollIntoView({ behavior: "smooth", block: "center" });
+     return;
+   }
 
-    setIsSubmitting(true);
-    setErrors({});
+   setIsSubmitting(true);
+   setErrors({});
 
-    try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      console.log("Application submitted:", formData);
-      setIsSubmitted(true);
-    } catch (err) {
-      console.log('Error Msg: ', err);
-      setErrors({ submit: "Failed to submit application. Please try again." });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+   let toastId: string | number | undefined;
+
+   try {
+     // Show loading toast
+     toastId = toast.loading("Submitting your application...");
+
+     // Send all form data to the API
+     const response = await fetch("/api/applications", {
+       method: "POST",
+       headers: {
+         "Content-Type": "application/json",
+       },
+       body: JSON.stringify({
+         // Personal Information
+         title: formData.title,
+         firstName: formData.firstName,
+         surname: formData.surname,
+         gender: formData.gender,
+         hasDisability: formData.hasDisability,
+         disabilitySpecification: formData.disabilitySpecification,
+         homeAddress: formData.homeAddress,
+         stateOfOrigin: formData.stateOfOrigin,
+         lga: formData.lga,
+         community: formData.community,
+         email: formData.email,
+         phoneNumber: formData.phoneNumber,
+
+         // Background Information
+         hasConviction: formData.hasConviction,
+         hasRelative: formData.hasRelative,
+         relativeName: formData.relativeName,
+         isEnrolled: formData.isEnrolled,
+         hasSkills: formData.hasSkills,
+         desiredSkill: formData.desiredSkill,
+         skills: formData.skills,
+
+         // Program Selection
+         programInterest: formData.programInterest,
+         motivation: formData.motivation,
+         futureGoals: formData.futureGoals,
+
+         // Terms (for validation purposes)
+         agreeToTerms: formData.agreeToTerms,
+         agreeToDataProcessing: formData.agreeToDataProcessing,
+       }),
+     });
+
+     const result = await response.json();
+
+     if (!response.ok) {
+       throw new Error(result.error || "Failed to submit application");
+     }
+
+     // Dismiss loading toast and show success
+     toast.dismiss(toastId);
+     toast.success("Application submitted successfully!", {
+       description: "We'll review your application and contact you soon.",
+       duration: 6000,
+       icon: <CheckCircle className='h-5 w-5 text-green-500' />,
+     });
+
+     setIsSubmitted(true);
+   } catch (err) {
+     // Ensure loading toast is dismissed
+     if (toastId) {
+       toast.dismiss(toastId);
+     }
+
+     const errorMessage =
+       err instanceof Error
+         ? err.message
+         : "Failed to submit application. Please try again.";
+
+     setErrors({ submit: errorMessage });
+
+     toast.error("Failed to submit application", {
+       description: errorMessage,
+       duration: 6000,
+       icon: <AlertCircle className='h-5 w-5 text-red-500' />,
+     });
+   } finally {
+     setIsSubmitting(false);
+   }
+ };
 
   // Helper function to check if field has error
   const hasError = (field: string): boolean => {

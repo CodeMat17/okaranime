@@ -158,35 +158,7 @@ export function SuccessStories() {
           ))}
         </div>
 
-        {/* CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          viewport={{ once: true }}
-          className='text-center mt-12'>
-          <div className='bg-white dark:bg-slate-900 rounded-2xl p-8 max-w-2xl mx-auto shadow-lg'>
-            <h3 className='text-2xl font-black mb-4'>Share Your Story</h3>
-            <p className='text-muted-foreground mb-6'>
-              Have you been impacted by our programs? We&apos;d love to hear
-              your story and celebrate your success with our community.
-            </p>
-            <div className='flex flex-col sm:flex-row gap-4 justify-center'>
-              <Button className='gap-3' asChild>
-                <a href='/share-story'>
-                  Share Your Story
-                  <Play className='h-5 w-5' />
-                </a>
-              </Button>
-              <Button variant='outline' className='gap-3' asChild>
-                <a href='/stories'>
-                  View All Stories
-                  <ArrowRight className='h-5 w-5' />
-                </a>
-              </Button>
-            </div>
-          </div>
-        </motion.div>
+    
       </div>
     </section>
   );

@@ -3,11 +3,7 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { PaymentDetailsForm } from "@/components/donate/PaymentDetailsForm";
-import { ReceiptUploadForm } from "@/components/donate/ReceiptUploadForm";
-import { BankDetails } from "@/components/donate/BankDetails";
 import { CheckCircle2, CreditCard, Upload } from "lucide-react";
-import { Button } from "../ui/button";
 
 type DonationStep = "payment-details" | "receipt-upload" | "completed";
 
@@ -110,8 +106,8 @@ export function DonationProcess() {
             {steps.map((step, index) => (
               <div
                 key={step.id}
-                className='flex items-center flex-1 w-full sm:w-auto'>
-                <div className='flex flex-col sm:flex-row items-center text-center sm:text-left'>
+                className='flex items-center justify-center gap-8 flex-1 w-full sm:w-auto'>
+                <div className='flex flex-col sm:flex-row items-center text-center sm:text-left mb-6'>
                   <div
                     className={`shrink-0 w-12 h-12 rounded-full flex items-center justify-center border-2 ${
                       step.status === "complete"
@@ -156,82 +152,10 @@ export function DonationProcess() {
         </motion.div>
 
         {/* Bank Details - Always Visible */}
-        <BankDetails />
+        {/* <BankDetails /> */}
 
         {/* Form Steps */}
-        <div className='bg-slate-50 dark:bg-slate-800 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg'>
-          {currentStep === "payment-details" && (
-            <PaymentDetailsForm
-              onSubmit={handlePaymentDetailsSubmit}
-              initialData={donationData}
-            />
-          )}
-
-          {currentStep === "receipt-upload" && (
-            <ReceiptUploadForm
-              onSubmit={handleReceiptUpload}
-              donationData={donationData}
-              onBack={() => setCurrentStep("payment-details")}
-            />
-          )}
-
-          {currentStep === "completed" && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className='text-center py-8'>
-              <div className='flex justify-center mb-6'>
-                <div className='flex h-16 w-16 items-center justify-center rounded-full bg-green-100 dark:bg-green-900'>
-                  <CheckCircle2 className='h-8 w-8 text-green-600 dark:text-green-400' />
-                </div>
-              </div>
-
-              <h3 className='text-2xl font-black mb-4'>
-                Donation Submitted Successfully!
-              </h3>
-
-              <p className='text-muted-foreground mb-6 leading-relaxed max-w-md mx-auto'>
-                Thank you for your generous donation to OKARANIME HERITAGE
-                FOUNDATION. We&apos;ve received your payment details and will
-                process your donation shortly.
-              </p>
-
-              <div className='space-y-3 text-sm text-muted-foreground mb-8 max-w-md mx-auto'>
-                <p>📧 A confirmation has been sent to {donationData.email}</p>
-                <p>
-                  📋 Your donation reference: OKA-xxxx
-                 
-                </p>
-                <p>⏰ We&apos;ll verify your payment within 24 hours</p>
-                <p>💝 Thank you for being part of our mission</p>
-              </div>
-
-              <div className='flex flex-col sm:flex-row gap-4 justify-center'>
-                <Button
-                  onClick={() => {
-                    setCurrentStep("payment-details");
-                    setDonationData({
-                      amount: "",
-                      frequency: "one-time",
-                      name: "",
-                      email: "",
-                      phone: "",
-                      message: "",
-                      anonymous: false,
-                      receiptRequired: true,
-                      paymentMethod: "bank-transfer",
-                    });
-                  }}
-                  className='gap-2'>
-                  Make Another Donation
-                </Button>
-                <Button variant='outline' asChild>
-                  <a href='/impact'>See Our Impact</a>
-                </Button>
-              </div>
-            </motion.div>
-          )}
-        </div>
+     <h1 className="text-center text-muted-foreground text-lg animate-pulse">Coming Soon!</h1>
       </div>
     </section>
   );
