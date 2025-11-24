@@ -2,7 +2,7 @@
 import { AboutHero } from "@/components/about/AboutHero";
 import { MissionVision } from "@/components/about/MissionVision";
 import { OurStory } from "@/components/about/OurStory";
-import { TeamSection } from "@/components/about/TeamSection";
+import { TeamSection } from "@/components/team/TeamSection";
 import { ValuesSection } from "@/components/about/ValuesSection";
 import { Achievements } from "@/components/about/Achievements";
 

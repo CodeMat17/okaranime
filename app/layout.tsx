@@ -1,10 +1,11 @@
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/Header";
+import { OrganizationStructuredData } from "@/components/structured-data/OrganizationStructuredData";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { Toaster } from "@/components/ui/sonner";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { OrganizationStructuredData } from "@/components/structured-data/OrganizationStructuredData";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -72,6 +73,7 @@ export default function RootLayout({
           <Header />
           <main className='min-h-screen'>{children}</main>
           <Footer />
+          <Toaster position='top-right' expand={true} richColors closeButton />
         </ThemeProvider>
       </body>
     </html>

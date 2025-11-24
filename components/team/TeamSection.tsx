@@ -6,26 +6,26 @@ import { Linkedin, Mail, Users } from "lucide-react";
 
 const teamMembers = [
   {
-    name: "Emeka Ikedi",
+    name: "Leonard Umekwe Okaranime Dikeakonamba",
     role: "Chief Executive Officer",
     bio: "Passionate social entrepreneur with 10+ years in community development.",
     image: "/team/ceo.jpg",
   },
   {
-    name: "John Agbala",
+    name: "Chidozi Clemenson Umekwe",
     role: "Program Director",
-    bio: "Expert in youth empowerment and sustainable development programs.",
+    bio: "A managerial stalwart and expert in youth empowerment and sustainable development programs.",
     image: "/team/program-director.jpg",
   },
   {
-    name: "Sarah Johnson",
-    role: "Women&apos;s Empowerment Lead",
-    bio: "Dedicated to creating economic opportunities for handicapped women.",
+    name: "Pastor Chioma Jehoshaphat Emilia (Dr)",
+    role: "Women's Empowerment Lead",
+    bio: "An altruistic and Magnanimous evangelist. Dedicated to creating economic opportunities for handicapped women.",
     image: "/team/women-lead.jpg",
   },
   {
-    name: "Michael Iwu",
-    role: "Talent Discovery Coordinator",
+    name: "Catherine Mayeye Obado Okaranime",
+    role: "Talent Discovery and Development Manager",
     bio: "Specializes in identifying and nurturing hidden talents in communities.",
     image: "/team/talent-coordinator.jpg",
   },
@@ -49,7 +49,7 @@ export function TeamSection() {
           </p>
         </motion.div>
 
-        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8'>
+        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8'>
           {teamMembers.map((member, index) => (
             <motion.div
               key={member.name}
@@ -70,18 +70,18 @@ export function TeamSection() {
 
                 {/* Team Member Info */}
                 <div className='p-6 text-center'>
-                  <h3 className='text-lg font-black mb-1'>{member.name}</h3>
+                  <h3 className='text-lg font-bold mb-1 leading-6'>{member.name}</h3>
                   <p className='text-primary font-semibold text-sm mb-3'>
                     {member.role}
                   </p>
-                  <p className='text-muted-foreground text-sm leading-relaxed mb-4'>
+                  <p className='text-muted-foreground text-sm leading-5 mb-4'>
                     {member.bio}
                   </p>
 
                   <div className='flex justify-center gap-3'>
-                    <button className='p-2 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-primary hover:text-white transition-colors'>
+                    {/* <button className='p-2 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-primary hover:text-white transition-colors'>
                       <Linkedin className='h-4 w-4' />
-                    </button>
+                    </button> */}
                     <button className='p-2 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-primary hover:text-white transition-colors'>
                       <Mail className='h-4 w-4' />
                     </button>

@@ -40,7 +40,7 @@ export function ContactHero() {
         </motion.div>
       </div>
 
-      <div className='w-full max-w-6xl mx-auto relative z-10 text-center'>
+      <div className='w-full max-w-6xl mx-auto relative z-10 text-center pt-8'>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}

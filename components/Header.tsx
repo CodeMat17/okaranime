@@ -17,6 +17,7 @@ const navigationItems = [
   { name: "Impact", href: "/impact" },
   { name: "Partners", href: "/partners" },
   { name: "News", href: "/news" },
+  { name: "Team", href: "/team" },
   { name: "Contact", href: "/contact" },
   { name: "Apply", href: "/apply" },
 ];

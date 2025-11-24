@@ -90,9 +90,11 @@ export function ContactForm() {
       return;
     }
 
+    let toastId: string | number | undefined;
+
     try {
       // Show loading toast
-      const toastId = toast.loading("Sending your message...");
+      toastId = toast.loading("Sending your message...");
 
       const response = await fetch("/api/emails", {
         method: "POST",
@@ -118,6 +120,11 @@ export function ContactForm() {
 
       setIsSubmitted(true);
     } catch (err) {
+      // Ensure loading toast is dismissed
+      if (toastId) {
+        toast.dismiss(toastId);
+      }
+
       const errorMessage =
         err instanceof Error
           ? err.message
@@ -135,6 +142,7 @@ export function ContactForm() {
     }
   };
 
+  // ... rest of the component remains the same
   if (isSubmitted) {
     return (
       <section
@@ -167,6 +175,7 @@ export function ContactForm() {
             </p>
 
             <div className='space-y-3 text-sm text-muted-foreground mb-8'>
+              <p>📧 A confirmation email has been sent to {formData.email}</p>
               <p>⏰ Our team typically responds within 24 hours</p>
               <p>📞 For urgent matters, call us at +234 913 486 1443</p>
             </div>
