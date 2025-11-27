@@ -154,7 +154,7 @@ export function Header() {
                           transition={{ delay: index * 0.1 }}>
                           <Link
                             href={item.href}
-                            className='block py-4 text-lg font-semibold transition-all duration-300 border-b border-border/30 hover:border-primary hover:text-primary hover:pl-4'
+                            className='block py-2.5 text-lg font-semibold transition-all duration-300 border-b border-border/30 hover:border-primary hover:text-primary hover:pl-4'
                             onClick={() => setIsOpen(false)}>
                             {item.name}
                           </Link>
