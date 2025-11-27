@@ -21,6 +21,7 @@ const navigationItems = [
   { name: "Team", href: "/team" },
   { name: "Contact", href: "/contact" },
   { name: "Apply", href: "/apply" },
+  { name: "Volunteer", href: "/volunteer" },
 ];
 
 export function Header() {

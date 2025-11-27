@@ -3,7 +3,6 @@
 
 import { motion } from "framer-motion";
 import { Newspaper, Search } from "lucide-react";
-import { Input } from "@/components/ui/input";
 
 export function NewsHero() {
   return (
@@ -67,7 +66,7 @@ export function NewsHero() {
           </motion.h1>
 
           <motion.p
-            className='text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto px-4'
+            className='text-lg text-muted-foreground leading-relaxed max-w-3xl mx-auto px-4'
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}>
@@ -76,7 +75,7 @@ export function NewsHero() {
           </motion.p>
 
           {/* Search Bar */}
-          <motion.div
+          {/* <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
@@ -89,10 +88,10 @@ export function NewsHero() {
                 className='pl-10 pr-4 py-6 text-base'
               />
             </div>
-          </motion.div>
+          </motion.div> */}
 
           {/* Quick Stats */}
-          <motion.div
+          {/* <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1.0 }}
@@ -116,7 +115,7 @@ export function NewsHero() {
                 </div>
               </motion.div>
             ))}
-          </motion.div>
+          </motion.div> */}
         </motion.div>
       </div>
     </section>

@@ -102,11 +102,11 @@ export function DonationProcess() {
             Donation <span className='text-primary'>Process</span>
           </h2>
 
-          <div className='flex flex-col sm:flex-row items-center justify-between relative'>
+          <div className='flex flex-col sm:flex-row items-center justify-between relative mt-12'>
             {steps.map((step, index) => (
               <div
                 key={step.id}
-                className='flex items-center justify-center gap-8 flex-1 w-full sm:w-auto'>
+                className='flex items-center justify-center gap-8 w-full sm:w-auto'>
                 <div className='flex flex-col sm:flex-row items-center text-center sm:text-left mb-6'>
                   <div
                     className={`shrink-0 w-12 h-12 rounded-full flex items-center justify-center border-2 ${
@@ -136,7 +136,7 @@ export function DonationProcess() {
                 </div>
 
                 {/* Connector line */}
-                {index < steps.length - 1 && (
+                {/* {index < steps.length - 1 && (
                   <div
                     className={`hidden sm:block flex-1 h-0.5 mx-4 ${
                       steps[index + 1].status === "complete" ||
@@ -145,7 +145,7 @@ export function DonationProcess() {
                         : "bg-slate-300 dark:bg-slate-600"
                     }`}
                   />
-                )}
+                )} */}
               </div>
             ))}
           </div>
