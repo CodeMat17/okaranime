@@ -6,6 +6,8 @@ import { Toaster } from "@/components/ui/sonner";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { ClerkProvider } from "@clerk/nextjs";
+import ConvexClientProvider from "@/components/ConvexClientProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -78,12 +80,21 @@ export default function RootLayout({
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <ThemeProvider attribute='class' defaultTheme='dark' enableSystem>
-          <Header />
-          <main className='min-h-screen'>{children}</main>
-          <Footer />
-          <Toaster position='top-right' expand={true} richColors closeButton />
-        </ThemeProvider>
+        <ClerkProvider>
+          <ThemeProvider attribute='class' defaultTheme='dark' enableSystem>
+            <ConvexClientProvider>
+              <Header />
+              <main className='min-h-screen'>{children}</main>
+              <Footer />
+              <Toaster
+                position='top-right'
+                expand={true}
+                richColors
+                closeButton
+              />
+            </ConvexClientProvider>
+          </ThemeProvider>
+        </ClerkProvider>
       </body>
     </html>
   );

@@ -121,7 +121,7 @@ export default function VolunteerPage() {
             </p>
             <div className='space-y-2 text-sm text-slate-600 dark:text-slate-300'>
               <p>📧 Email: volunteers@okaranime.org</p>
-              <p>📞 Phone: +234 (0) 123 456 7890</p>
+              <p>📞 Phone: +234 (0) 913 486 1443</p>
               <p>🕒 Response Time: Within 2 business days</p>
             </div>
           </div>

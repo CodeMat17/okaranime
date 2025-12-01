@@ -114,7 +114,7 @@ export function ContactMethods() {
               <a
                 href='tel:+2340123456789'
                 className='text-primary hover:underline'>
-                +234 (0) 123 456 789
+                +234 (0) 913 486 1443
               </a>
             </p>
           </motion.div>

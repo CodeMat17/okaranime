@@ -2,14 +2,10 @@
 
 import { Creepster } from "next/font/google";
 
-import Link from "next/link";
 import { motion } from "framer-motion";
-import {
-  Facebook,
-  Twitter,
-  Instagram,
-} from "lucide-react";
+import { Facebook, Instagram, Twitter } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 const creepster = Creepster({
   subsets: ["latin"],
@@ -28,20 +24,20 @@ const footerLinks = {
   programs: [
     { name: "Our Programs", href: "/programs#programs" },
     { name: "How Our Programs Works", href: "/programs#benefits" },
-  
   ],
   support: [
     { name: "Donate", href: "/donate" },
     // { name: "Partners", href: "/partners" },
     { name: "Contact", href: "/contact" },
   ],
+  staff: [{ name: "Admin", href: "/admin" }],
 };
 
 export function Footer() {
   return (
     <footer className='bg-muted/50 border-t'>
-      <div className='container py-12 px-4'>
-        <div className='grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-5'>
+      <div className=' py-12 px-4'>
+        <div className='grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-6'>
           {/* Brand */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -50,9 +46,11 @@ export function Footer() {
             viewport={{ once: true }}
             className='lg:col-span-2'>
             <Link href='/' className='flex items-center space-x-2 mb-4'>
-            
-              <Image alt="logo" width={35} height={35} src="/logo.png"  />
-              <span className={`${creepster.className} text-2xl tracking-wide font-bold`}>OKARANIME</span>
+              <Image alt='logo' width={35} height={35} src='/logo.png' />
+              <span
+                className={`${creepster.className} text-2xl tracking-wide font-bold`}>
+                OKARANIME
+              </span>
             </Link>
             <p className='text-muted-foreground mb-6 max-w-md'>
               Empowering the next generation through sustainable programs,
@@ -105,8 +103,6 @@ export function Footer() {
             )
           )}
         </div>
-
-    
 
         {/* Bottom */}
         <motion.div

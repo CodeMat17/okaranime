@@ -4,6 +4,7 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { CheckCircle2, CreditCard, Upload } from "lucide-react";
+import { BankDetails } from "./BankDetails";
 
 type DonationStep = "payment-details" | "receipt-upload" | "completed";
 
@@ -98,11 +99,11 @@ export function DonationProcess() {
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
           className='mb-12 lg:mb-16'>
-          <h2 className='text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl mb-6 text-center'>
+          {/* <h2 className='text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl mb-6 text-center'>
             Donation <span className='text-primary'>Process</span>
-          </h2>
+          </h2> */}
 
-          <div className='flex flex-col sm:flex-row items-center justify-between relative mt-12'>
+          {/* <div className='flex flex-col sm:flex-row items-center justify-between relative mt-12'>
             {steps.map((step, index) => (
               <div
                 key={step.id}
@@ -135,27 +136,17 @@ export function DonationProcess() {
                   </div>
                 </div>
 
-                {/* Connector line */}
-                {/* {index < steps.length - 1 && (
-                  <div
-                    className={`hidden sm:block flex-1 h-0.5 mx-4 ${
-                      steps[index + 1].status === "complete" ||
-                      steps[index + 1].status === "current"
-                        ? "bg-primary"
-                        : "bg-slate-300 dark:bg-slate-600"
-                    }`}
-                  />
-                )} */}
+              
               </div>
             ))}
-          </div>
+          </div> */}
         </motion.div>
 
         {/* Bank Details - Always Visible */}
-        {/* <BankDetails /> */}
+        <BankDetails />
 
         {/* Form Steps */}
-     <h1 className="text-center text-muted-foreground text-lg animate-pulse">Coming Soon!</h1>
+    
       </div>
     </section>
   );
