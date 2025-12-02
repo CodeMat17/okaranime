@@ -35,18 +35,6 @@ export function TeamSection() {
             id='team'
             className='py-16 sm:py-20 lg:py-24 bg-slate-50 dark:bg-slate-800/50 px-4 sm:px-6 lg:px-8'>
             <div className='w-full max-w-6xl mx-auto'>
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-                className='text-center mb-12 lg:mb-16'>
-                <h2 className='text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl mb-6'>
-                  Meet Our <span className='text-primary'>Team</span>
-                </h2>
-                <p className='text-xl text-muted-foreground max-w-3xl mx-auto'>
-                  The passionate individuals driving our mission forward
-                </p>
-              </motion.div>
 
               {/* Loading skeleton */}
               <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8'>
