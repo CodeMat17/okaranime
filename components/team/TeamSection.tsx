@@ -35,7 +35,6 @@ export function TeamSection() {
             id='team'
             className='py-16 sm:py-20 lg:py-24 bg-slate-50 dark:bg-slate-800/50 px-4 sm:px-6 lg:px-8'>
             <div className='w-full max-w-6xl mx-auto'>
-
               {/* Loading skeleton */}
               <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8'>
                 {[1, 2, 3, 4].map((item) => (
@@ -135,9 +134,13 @@ export function TeamSection() {
                       {/* <button className='p-2 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-primary hover:text-white transition-colors'>
                       <Linkedin className='h-4 w-4' />
                     </button> */}
-                      <button className='p-2 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-primary hover:text-white transition-colors'>
-                        <Mail className='h-4 w-4' />
-                      </button>
+                      {member.email &&
+                        <button className='p-2 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-primary hover:text-white transition-colors'>
+                          <a href={`mailto:${member.email}`}>
+                            <Mail className='h-4 w-4' />
+                          </a>
+                        </button>
+                      }
                     </div>
                   </div>
                 </div>
