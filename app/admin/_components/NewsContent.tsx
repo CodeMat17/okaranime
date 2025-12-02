@@ -11,6 +11,7 @@ import { api } from "@/convex/_generated/api";
 import { AddNewsModal } from "@/components/admin/AddNewsModal";
 import { UpdateNewsModal } from "@/components/admin/UpdateNewsModal";
 import { DeleteNewsModal } from "@/components/admin/DeleteNewsModal";
+import AdminPagesHeader from "./AdminPagesHeader";
 
 const NewsContent = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -37,15 +38,12 @@ const NewsContent = () => {
   return (
     <div className='min-h-screen bg-background pt-24 pb-8'>
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
-        {/* Header Section */}
-        <div className='flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8'>
+        {/* Header Section */} <AdminPagesHeader />
+        <div className='pt-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8'>
           <div>
             <h1 className='text-3xl font-black text-foreground mb-2'>
               Latest News
             </h1>
-            <p className='text-muted-foreground text-lg'>
-              Stay updated with our latest activities and announcements
-            </p>
           </div>
 
           <AddNewsModal>
@@ -55,7 +53,6 @@ const NewsContent = () => {
             </Button>
           </AddNewsModal>
         </div>
-
         {/* Search Section */}
         <div className='mb-8'>
           <div className='relative max-w-md'>
@@ -76,7 +73,6 @@ const NewsContent = () => {
             )}
           </div>
         </div>
-
         {/* News Grid */}
         <div className='grid gap-6'>
           {newsData === undefined ? (
@@ -181,7 +177,6 @@ const NewsContent = () => {
             </div>
           )}
         </div>
-
         {/* Search Results Info */}
         {searchQuery && filteredNews.length > 0 && (
           <div className='mt-8 text-center'>

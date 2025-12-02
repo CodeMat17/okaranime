@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/card";
 import { checkRole } from "@/utils/roles";
 import { SignedIn, UserButton } from "@clerk/nextjs";
-import { FileText } from "lucide-react";
+import { FileText, Users } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
@@ -62,8 +62,7 @@ export default function AdminPage() {
             Welcome, Administrator
           </h2>
           <p className='text-slate-600 dark:text-slate-400'>
-            Manage your NGO&apos;s content, users, and settings from this
-            dashboard.
+            Manage your NGO&apos;s content, team, etc from this dashboard.
           </p>
         </div>
 
@@ -87,6 +86,46 @@ export default function AdminPage() {
               </p>
               <Button asChild className='w-full'>
                 <Link href='/admin/news'>Manage News</Link>
+              </Button>
+            </CardContent>
+          </Card>
+
+          {/* Team Management */}
+          <Card className='hover:shadow-lg transition-shadow'>
+            <CardHeader>
+              <CardTitle className='flex items-center gap-2'>
+                <Users className='h-5 w-5 text-primary' />
+                Team Management
+              </CardTitle>
+              <CardDescription>
+                Manage team members and their profiles
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className='text-sm text-slate-600 dark:text-slate-400 mb-4'>
+                Add, edit, or remove team members. Update their positions,
+                descriptions, and profile images.
+              </p>
+              <Button asChild className='w-full' variant='default'>
+                <Link href='/admin/team'>Manage Team</Link>
+              </Button>
+            </CardContent>
+          </Card>
+
+          {/* Placeholder for future features */}
+          <Card className='hover:shadow-lg transition-shadow border-dashed'>
+            <CardHeader>
+              <CardTitle className='text-muted-foreground'>
+                Coming Soon
+              </CardTitle>
+              <CardDescription>Additional management features</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className='text-sm text-muted-foreground mb-4'>
+                More administrative tools will be added here in the future.
+              </p>
+              <Button disabled className='w-full' variant='outline'>
+                Under Development
               </Button>
             </CardContent>
           </Card>
