@@ -178,7 +178,7 @@ export function HeroSection() {
                 <Image
                   priority
                   alt='OKARANIME Heritage Foundation - Empowering Youth and Women'
-                  src='/hero-image.avif'
+                  src='/hero-image.webp'
                   width={800}
                   height={800}
                   className='object-cover w-full h-full'
