@@ -4,7 +4,8 @@
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
 import { motion } from "framer-motion";
-import { Linkedin, Mail, UserPlus, Users } from "lucide-react";
+import { Mail, UserPlus, Users } from "lucide-react";
+import Image from "next/image";
 
 
 
@@ -109,13 +110,16 @@ export function TeamSection() {
                 className='group'>
                 <div className='bg-white dark:bg-slate-900 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300'>
                   {/* Team Member Image */}
-                  <div className='aspect-square bg-linear-to-br from-primary/20 to-secondary/20 flex items-center justify-center'>
+                  <div className='relative aspect-square bg-linear-to-br from-primary/20 to-secondary/20 flex items-center justify-center'>
                     <div className='text-center p-6'>
                       <Users className='h-12 w-12 text-primary mx-auto mb-3' />
                       <p className='text-sm text-muted-foreground'>
                         Team Photo
                       </p>
                     </div>
+                    {/* <div>
+                      <Image alt="" fill src='/ceo.webp' className="object-cover"/>
+                    </div> */}
                   </div>
 
                   {/* Team Member Info */}

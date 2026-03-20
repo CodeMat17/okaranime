@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/card";
 import { checkRole } from "@/utils/roles";
 import { SignedIn, UserButton } from "@clerk/nextjs";
-import { FileText, Users } from "lucide-react";
+import { Download, FileText, Users } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
@@ -112,20 +112,24 @@ export default function AdminPage() {
             </CardContent>
           </Card>
 
-          {/* Placeholder for future features */}
-          <Card className='hover:shadow-lg transition-shadow border-dashed'>
+          {/* Backup & Restore */}
+          <Card className='hover:shadow-lg transition-shadow'>
             <CardHeader>
-              <CardTitle className='text-muted-foreground'>
-                Coming Soon
+              <CardTitle className='flex items-center gap-2'>
+                <Download className='h-5 w-5 text-primary' />
+                Backup &amp; Restore
               </CardTitle>
-              <CardDescription>Additional management features</CardDescription>
+              <CardDescription>
+                Export data and images, restore to a new deployment
+              </CardDescription>
             </CardHeader>
             <CardContent>
-              <p className='text-sm text-muted-foreground mb-4'>
-                More administrative tools will be added here in the future.
+              <p className='text-sm text-slate-600 dark:text-slate-400 mb-4'>
+                Download a full backup of all news and team data including
+                images, or import a backup into a new Convex deployment.
               </p>
-              <Button disabled className='w-full' variant='outline'>
-                Under Development
+              <Button asChild className='w-full' variant='default'>
+                <Link href='/admin/backup'>Backup &amp; Restore</Link>
               </Button>
             </CardContent>
           </Card>

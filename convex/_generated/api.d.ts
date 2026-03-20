@@ -8,6 +8,7 @@
  * @module
  */
 
+import type * as backup from "../backup.js";
 import type * as news from "../news.js";
 import type * as team from "../team.js";
 
@@ -18,6 +19,7 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  backup: typeof backup;
   news: typeof news;
   team: typeof team;
 }>;
