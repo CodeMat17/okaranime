@@ -177,20 +177,19 @@ export function NewsGrid() {
 
         {/* Loading State */}
         {newsData === undefined && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className='text-center py-16'>
-            <div className='max-w-md mx-auto'>
-              <Newspaper className='h-16 w-16 text-muted-foreground mx-auto mb-4' />
-              <h3 className='text-xl font-semibold text-foreground mb-2'>
-                Loading News...
-              </h3>
-              <p className='text-muted-foreground'>
-                Fetching the latest news articles.
-              </p>
-            </div>
-          </motion.div>
+          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8'>
+            {[0, 1, 2, 3, 4, 5].map((i) => (
+              <div key={i} className='rounded-xl shadow-lg overflow-hidden bg-white dark:bg-slate-900'>
+                <div className='aspect-video bg-slate-200 dark:bg-slate-700 animate-pulse' />
+                <div className='p-6 space-y-3'>
+                  <div className='h-5 bg-slate-200 dark:bg-slate-700 rounded animate-pulse' />
+                  <div className='h-5 w-5/6 bg-slate-200 dark:bg-slate-700 rounded animate-pulse' />
+                  <div className='h-4 w-32 bg-slate-200 dark:bg-slate-700 rounded animate-pulse' />
+                  <div className='h-9 bg-slate-200 dark:bg-slate-700 rounded-lg animate-pulse mt-4' />
+                </div>
+              </div>
+            ))}
+          </div>
         )}
 
         {/* Articles Grid */}

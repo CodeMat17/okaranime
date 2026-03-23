@@ -58,8 +58,7 @@ export const getAllTeam = query({
       );
 
       return teamWithImages;
-    } catch (error) {
-      console.error("Error fetching team members:", error);
+    } catch {
       return [];
     }
   },
@@ -197,12 +196,8 @@ export const deleteTeam = mutation({
     if (teamMember.image) {
       try {
         await ctx.storage.delete(teamMember.image as Id<"_storage">);
-      } catch (error) {
-          console.log('Error Msg: ', error);
-        console.warn(
-          "Failed to delete image from storage, continuing with team member deletion"
-        );
-        // Continue with deletion even if image deletion fails
+      } catch {
+        // Non-fatal — image already gone or inaccessible
       }
     }
 

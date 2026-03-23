@@ -8,12 +8,12 @@ export const metadata: Metadata = {
   description: "Manage team members for OKARANIME HERITAGE FOUNDATION",
 };
 
-export default function TeamLayout({
+export default async function TeamLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  if (!checkRole("admin")) {
+  if (!(await checkRole("admin"))) {
     redirect("/");
   }
 

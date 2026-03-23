@@ -9,12 +9,12 @@ import {
 } from "@/components/ui/card";
 import { checkRole } from "@/utils/roles";
 import { SignedIn, UserButton } from "@clerk/nextjs";
-import { Download, FileText, Users } from "lucide-react";
+import { Download, FileText, Users, LayoutTemplate, Images } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-export default function AdminPage() {
-  if (!checkRole("admin")) {
+export default async function AdminPage() {
+  if (!(await checkRole("admin"))) {
     redirect("/");
   }
 
@@ -112,24 +112,46 @@ export default function AdminPage() {
             </CardContent>
           </Card>
 
-          {/* Backup & Restore */}
+          {/* About Page Content */}
           <Card className='hover:shadow-lg transition-shadow'>
             <CardHeader>
               <CardTitle className='flex items-center gap-2'>
-                <Download className='h-5 w-5 text-primary' />
-                Backup &amp; Restore
+                <LayoutTemplate className='h-5 w-5 text-primary' />
+                About Page Content
               </CardTitle>
               <CardDescription>
-                Export data and images, restore to a new deployment
+                Edit hero, story, mission, vision, values &amp; more
               </CardDescription>
             </CardHeader>
             <CardContent>
               <p className='text-sm text-slate-600 dark:text-slate-400 mb-4'>
-                Download a full backup of all news and team data including
-                images, or import a backup into a new Convex deployment.
+                Update every section of the About page and the homepage hero —
+                headings, text, stats, and images.
               </p>
               <Button asChild className='w-full' variant='default'>
-                <Link href='/admin/backup'>Backup &amp; Restore</Link>
+                <Link href='/admin/about'>Edit About Page</Link>
+              </Button>
+            </CardContent>
+          </Card>
+
+          {/* Gallery Management */}
+          <Card className='hover:shadow-lg transition-shadow'>
+            <CardHeader>
+              <CardTitle className='flex items-center gap-2'>
+                <Images className='h-5 w-5 text-primary' />
+                Gallery Management
+              </CardTitle>
+              <CardDescription>
+                Upload and manage event photo albums
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className='text-sm text-slate-600 dark:text-slate-400 mb-4'>
+                Create albums of 1–6 photos from events and programs. Images are
+                automatically compressed before upload.
+              </p>
+              <Button asChild className='w-full' variant='default'>
+                <Link href='/admin/gallery'>Manage Gallery</Link>
               </Button>
             </CardContent>
           </Card>

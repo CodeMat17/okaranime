@@ -12,9 +12,10 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "api.placeholder.com",
+        hostname: "useful-cardinal-474.convex.cloud",
         pathname: "**",
       },
+
     ],
   },
   experimental: {

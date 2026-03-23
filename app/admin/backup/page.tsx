@@ -2,8 +2,8 @@ import { checkRole } from "@/utils/roles";
 import { redirect } from "next/navigation";
 import BackupClient from "./BackupClient";
 
-const BackupPage = () => {
-  if (!checkRole("admin")) {
+const BackupPage = async () => {
+  if (!(await checkRole("admin"))) {
     redirect("/");
   }
 

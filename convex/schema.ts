@@ -18,4 +18,22 @@ export default defineSchema({
   })
     .index("by_name", ["name"])
     .index("by_position", ["position"]),
+
+  // Gallery albums – each album holds 1–6 photo storage IDs
+  gallery: defineTable({
+    title: v.string(),
+    description: v.string(),
+    images: v.array(v.string()), // Convex storage IDs, 1–6
+  }).index("by_title", ["title"]),
+
+  // Site-wide editable content. One document per section key.
+  // `body` stores JSON strings for sections with complex structure
+  // (arrays, multiple paragraphs, bullet lists, key-value facts, etc.)
+  siteContent: defineTable({
+    section: v.string(),
+    title: v.optional(v.string()),
+    subtitle: v.optional(v.string()),
+    body: v.optional(v.string()),
+    image: v.optional(v.string()), // Convex storage ID
+  }).index("by_section", ["section"]),
 });

@@ -111,15 +111,21 @@ export function TeamSection() {
                 <div className='bg-white dark:bg-slate-900 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300'>
                   {/* Team Member Image */}
                   <div className='relative aspect-square bg-linear-to-br from-primary/20 to-secondary/20 flex items-center justify-center'>
-                    <div className='text-center p-6'>
-                      <Users className='h-12 w-12 text-primary mx-auto mb-3' />
-                      <p className='text-sm text-muted-foreground'>
-                        Team Photo
-                      </p>
-                    </div>
-                    {/* <div>
-                      <Image alt="" fill src='/ceo.webp' className="object-cover"/>
-                    </div> */}
+                    {member.imageUrl ? (
+                      <Image
+                        src={member.imageUrl}
+                        alt={member.name}
+                        fill
+                        className='object-cover group-hover:scale-105 transition-transform duration-300'
+                        sizes='(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw'
+                        unoptimized
+                      />
+                    ) : (
+                      <div className='text-center p-6'>
+                        <Users className='h-12 w-12 text-primary mx-auto mb-3' />
+                        <p className='text-sm text-muted-foreground'>Team Photo</p>
+                      </div>
+                    )}
                   </div>
 
                   {/* Team Member Info */}

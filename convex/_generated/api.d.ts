@@ -9,7 +9,9 @@
  */
 
 import type * as backup from "../backup.js";
+import type * as gallery from "../gallery.js";
 import type * as news from "../news.js";
+import type * as siteContent from "../siteContent.js";
 import type * as team from "../team.js";
 
 import type {
@@ -20,7 +22,9 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   backup: typeof backup;
+  gallery: typeof gallery;
   news: typeof news;
+  siteContent: typeof siteContent;
   team: typeof team;
 }>;
 

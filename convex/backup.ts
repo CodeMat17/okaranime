@@ -225,6 +225,8 @@ export const importItemsInternal = internalMutation({
 export const generateUploadUrl = mutation({
   args: {},
   handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Unauthorized");
     return await ctx.storage.generateUploadUrl();
   },
 });

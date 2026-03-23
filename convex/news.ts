@@ -127,6 +127,8 @@ export const getNewsById = query({
 export const generateUploadUrl = mutation({
   args: {},
   handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Unauthorized");
     return await ctx.storage.generateUploadUrl();
   },
 });
@@ -257,12 +259,8 @@ export const deleteNews = mutation({
     if (newsItem.image) {
       try {
         await ctx.storage.delete(newsItem.image as Id<"_storage">);
-      } catch (error) {
-        console.log("Error Msg: ", error);
-        console.warn(
-          "Failed to delete image from storage, continuing with news deletion"
-        );
-        // Continue with news deletion even if image deletion fails
+      } catch {
+        // Non-fatal — image already gone or inaccessible
       }
     }
 
