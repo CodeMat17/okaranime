@@ -16,7 +16,7 @@ import { NewsForm } from "./NewsForm";
 
 interface UpdateNewsModalProps {
   children: React.ReactNode;
-  news: Doc<"news"> & { imageUrl?: string };
+  news: Doc<"news"> & { imageUrls: string[] };
 }
 
 export function UpdateNewsModal({ children, news }: UpdateNewsModalProps) {
@@ -45,7 +45,9 @@ export function UpdateNewsModal({ children, news }: UpdateNewsModalProps) {
             _id: news._id,
             title: news.title,
             content: news.content,
-            imageUrl: news.imageUrl,
+            imageStorageIds: news.images ?? (news.image ? [news.image] : []),
+            imageUrls: news.imageUrls,
+            captions: news.captions ?? [],
           }}
           onSuccess={handleSuccess}
           onCancel={() => setOpen(false)}

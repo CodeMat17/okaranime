@@ -3,7 +3,9 @@ import { v } from "convex/values";
 
 export default defineSchema({
   news: defineTable({
-    image: v.optional(v.string()),
+    image: v.optional(v.string()),           // legacy single image storage ID
+    images: v.optional(v.array(v.string())), // multi-image storage IDs (1–6)
+    captions: v.optional(v.array(v.string())), // captions[i] for images[i]
     title: v.string(),
     slug: v.string(),
     content: v.string(),

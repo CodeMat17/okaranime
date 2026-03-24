@@ -35,90 +35,76 @@ const generateSlug = (title: string): string => {
     .replace(/-$/, "");
 };
 
+// Helper: resolve all images (URL + caption) for a news doc
+async function resolveImages(
+  ctx: { storage: { getUrl: (id: Id<"_storage">) => Promise<string | null> } },
+  doc: { image?: string; images?: string[]; captions?: string[] }
+): Promise<{ url: string; caption: string }[]> {
+  const ids: string[] =
+    doc.images && doc.images.length > 0
+      ? doc.images
+      : doc.image
+        ? [doc.image]
+        : [];
+  const captions = doc.captions ?? [];
+  const result: { url: string; caption: string }[] = [];
+  for (let i = 0; i < ids.length; i++) {
+    const url = await ctx.storage.getUrl(ids[i] as Id<"_storage">);
+    if (url) result.push({ url, caption: captions[i] ?? "" });
+  }
+  return result;
+}
+
 // Query: Get all news
 export const getAllNews = query({
   args: {},
   handler: async (ctx) => {
     const news = await ctx.db.query("news").order("desc").collect();
-
-    // Get image URLs for each news item
-    const newsWithImages = await Promise.all(
+    return await Promise.all(
       news.map(async (newsItem) => {
-        let imageUrl: string | undefined = undefined;
-        if (newsItem.image) {
-          const url = await ctx.storage.getUrl(
-            newsItem.image as Id<"_storage">
-          );
-          if (url) {
-            imageUrl = url;
-          }
-        }
+        const imageItems = await resolveImages(ctx, newsItem);
         return {
           ...newsItem,
-          imageUrl,
+          imageItems,
+          imageUrls: imageItems.map((i) => i.url),
+          imageUrl: imageItems[0]?.url,
         };
       })
     );
-
-    return newsWithImages;
   },
 });
 
 // Query: Get news by slug
 export const getNewsBySlug = query({
-  args: {
-    slug: v.string(),
-  },
+  args: { slug: v.string() },
   handler: async (ctx, args) => {
     const newsItem = await ctx.db
       .query("news")
       .withIndex("by_slug", (q) => q.eq("slug", args.slug))
       .first();
-
-    if (!newsItem) {
-      return null;
-    }
-
-    // Get storage URL for image if it exists
-    let imageUrl: string | undefined = undefined;
-    if (newsItem.image) {
-      const url = await ctx.storage.getUrl(newsItem.image as Id<"_storage">);
-      if (url) {
-        imageUrl = url;
-      }
-    }
-
+    if (!newsItem) return null;
+    const imageItems = await resolveImages(ctx, newsItem);
     return {
       ...newsItem,
-      imageUrl,
+      imageItems,
+      imageUrls: imageItems.map((i) => i.url),
+      imageUrl: imageItems[0]?.url,
     };
   },
 });
 
 // Query: Get news by ID
 export const getNewsById = query({
-  args: {
-    id: v.id("news"),
-  },
+  args: { id: v.id("news") },
   handler: async (ctx, args) => {
     const newsItem = await ctx.db.get(args.id);
-
-    if (!newsItem) {
-      return null;
-    }
-
-    // Get storage URL for image if it exists
-    let imageUrl: string | undefined = undefined;
-    if (newsItem.image) {
-      const url = await ctx.storage.getUrl(newsItem.image as Id<"_storage">);
-      if (url) {
-        imageUrl = url;
-      }
-    }
-
+    if (!newsItem) return null;
+    const imageItems = await resolveImages(ctx, newsItem);
     return {
       ...newsItem,
-      imageUrl,
+      imageItems,
+      imageUrls: imageItems.map((i) => i.url),
+      imageUrl: imageItems[0]?.url,
     };
   },
 });
@@ -136,19 +122,19 @@ export const generateUploadUrl = mutation({
 // Mutation: Add new news
 export const addNews = mutation({
   args: {
-    image: v.optional(v.string()), // Storage ID
     title: v.string(),
     content: v.string(),
+    images: v.optional(v.array(v.string())),   // storage IDs, up to 6
+    captions: v.optional(v.array(v.string())), // captions[i] for images[i]
   },
   handler: async (ctx, args) => {
-    // Sanitize inputs
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Unauthorized");
+
     const sanitizedTitle = sanitizeTitle(args.title);
     const sanitizedContent = sanitizeBody(args.content);
-
-    // Generate slug from title
     const slug = generateSlug(sanitizedTitle);
 
-    // Check if slug already exists and make it unique if needed
     let uniqueSlug = slug;
     let counter = 1;
     while (
@@ -161,17 +147,14 @@ export const addNews = mutation({
       counter++;
     }
 
-    // Handle image assignment - convert null to undefined
-    const imageValue = args.image || undefined;
-
-    const newsId = await ctx.db.insert("news", {
-      image: imageValue,
+    const hasImages = args.images && args.images.length > 0;
+    return await ctx.db.insert("news", {
       title: sanitizedTitle,
       slug: uniqueSlug,
       content: sanitizedContent,
+      images: hasImages ? args.images : undefined,
+      captions: hasImages ? args.captions : undefined,
     });
-
-    return newsId;
   },
 });
 
@@ -179,18 +162,20 @@ export const addNews = mutation({
 export const updateNews = mutation({
   args: {
     id: v.id("news"),
-    image: v.optional(v.union(v.string(), v.null())), // Allow null to clear image
     title: v.optional(v.string()),
     content: v.optional(v.string()),
+    // Pass the final list of storage IDs after edits; null = clear all images
+    images: v.optional(v.union(v.array(v.string()), v.null())),
+    // captions[i] maps to images[i]; null = clear all captions
+    captions: v.optional(v.union(v.array(v.string()), v.null())),
   },
   handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Unauthorized");
+
     const existingNews = await ctx.db.get(args.id);
+    if (!existingNews) throw new Error("News item not found");
 
-    if (!existingNews) {
-      throw new Error("News item not found");
-    }
-
-    // Sanitize inputs
     const sanitizedTitle = args.title
       ? sanitizeTitle(args.title)
       : existingNews.title;
@@ -199,69 +184,83 @@ export const updateNews = mutation({
       : existingNews.content;
 
     let slug = existingNews.slug;
-
-    // If title changed, generate new slug
     if (args.title && args.title !== existingNews.title) {
       const newSlug = generateSlug(sanitizedTitle);
-
-      // Check if new slug already exists (excluding current news)
       let uniqueSlug = newSlug;
       let counter = 1;
       while (true) {
-        const existingWithSlug = await ctx.db
+        const existing = await ctx.db
           .query("news")
           .withIndex("by_slug", (q) => q.eq("slug", uniqueSlug))
           .first();
-
-        if (!existingWithSlug || existingWithSlug._id === args.id) {
-          break;
-        }
+        if (!existing || existing._id === args.id) break;
         uniqueSlug = `${newSlug}-${counter}`;
         counter++;
       }
       slug = uniqueSlug;
     }
 
-    // Handle image assignment - convert null to undefined
-    let imageValue: string | undefined;
-    if (args.image === null) {
-      imageValue = undefined;
-    } else if (args.image !== undefined) {
-      imageValue = args.image;
+    // Determine new images array
+    let newImages: string[] | undefined;
+    if (args.images === null) {
+      newImages = undefined; // clear all
+    } else if (args.images !== undefined) {
+      newImages = args.images.length > 0 ? args.images : undefined;
     } else {
-      imageValue = existingNews.image;
+      newImages = existingNews.images; // unchanged
+    }
+
+    // Delete images removed from the post
+    if (args.images !== undefined) {
+      const incoming = args.images ?? [];
+      const oldIds = existingNews.images ?? (existingNews.image ? [existingNews.image] : []);
+      const removed = oldIds.filter((id) => !incoming.includes(id));
+      for (const id of removed) {
+        try { await ctx.storage.delete(id as Id<"_storage">); } catch { /* already gone */ }
+      }
+    }
+
+    // Determine new captions array
+    let newCaptions: string[] | undefined;
+    if (args.captions === null) {
+      newCaptions = undefined; // clear all
+    } else if (args.captions !== undefined) {
+      newCaptions = args.captions.length > 0 ? args.captions : undefined;
+    } else {
+      newCaptions = existingNews.captions; // unchanged
     }
 
     await ctx.db.patch(args.id, {
-      image: imageValue,
       title: sanitizedTitle,
       slug,
       content: sanitizedContent,
+      images: newImages,
+      captions: newCaptions,
+      // Clear legacy image field when using new images array
+      image: newImages ? undefined : existingNews.image,
     });
 
     return args.id;
   },
 });
 
-// Mutation: Delete news and associated image
+// Mutation: Delete news and all associated images
 export const deleteNews = mutation({
-  args: {
-    id: v.id("news"),
-  },
+  args: { id: v.id("news") },
   handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Unauthorized");
+
     const newsItem = await ctx.db.get(args.id);
+    if (!newsItem) throw new Error("News item not found");
 
-    if (!newsItem) {
-      throw new Error("News item not found");
-    }
-
-    // Delete associated image from storage if it exists
-    if (newsItem.image) {
-      try {
-        await ctx.storage.delete(newsItem.image as Id<"_storage">);
-      } catch {
-        // Non-fatal — image already gone or inaccessible
-      }
+    // Delete all images (new array + legacy single)
+    const allIds = [
+      ...(newsItem.images ?? []),
+      ...(newsItem.image && !newsItem.images ? [newsItem.image] : []),
+    ];
+    for (const id of allIds) {
+      try { await ctx.storage.delete(id as Id<"_storage">); } catch { /* already gone */ }
     }
 
     await ctx.db.delete(args.id);
@@ -281,35 +280,21 @@ export const uploadNewsImage = mutation({
 });
 
 export const getNewsBySlugForMetadata = query({
-  args: {
-    slug: v.string(),
-  },
+  args: { slug: v.string() },
   handler: async (ctx, args) => {
     const newsItem = await ctx.db
       .query("news")
       .withIndex("by_slug", (q) => q.eq("slug", args.slug))
       .first();
-
-    if (!newsItem) {
-      return null;
-    }
-
-    // Get image URL for metadata if it exists
-    let imageUrl: string | undefined = undefined;
-    if (newsItem.image) {
-      const url = await ctx.storage.getUrl(newsItem.image as Id<"_storage">);
-      if (url) {
-        imageUrl = url;
-      }
-    }
-
+    if (!newsItem) return null;
+    const imageItems = await resolveImages(ctx, newsItem);
     return {
       _id: newsItem._id,
       title: newsItem.title,
       content: newsItem.content,
       slug: newsItem.slug,
       _creationTime: newsItem._creationTime,
-      imageUrl, // Include image URL for metadata
+      imageUrl: imageItems[0]?.url,
     };
   },
 });

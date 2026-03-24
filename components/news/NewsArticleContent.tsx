@@ -107,19 +107,58 @@ export function NewsArticleContent({ slug }: NewsArticleContentProps) {
           </div>
         </div>
 
-        {/* Article Image */}
-        {article.imageUrl && (
+        {/* Article Images */}
+        {article.imageItems && article.imageItems.length > 0 && (
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className='aspect-video rounded-2xl overflow-hidden mb-8 relative'>
-            <Image
-              src={article.imageUrl}
-              alt={article.title}
-              fill
-              className='object-cover'
-            />
+            className='mb-8 space-y-2'>
+            {/* Hero image */}
+            <div>
+              <div className='aspect-video rounded-2xl overflow-hidden relative'>
+                <Image
+                  src={article.imageItems[0].url}
+                  alt={article.title}
+                  fill
+                  className='object-cover'
+                  unoptimized
+                />
+              </div>
+              {article.imageItems[0].caption && (
+                <p className='text-sm text-slate-500 dark:text-slate-400 text-center mt-2 italic'>
+                  {article.imageItems[0].caption}
+                </p>
+              )}
+            </div>
+            {/* Additional images strip */}
+            {article.imageItems.length > 1 && (
+              <div className={`grid gap-2 ${
+                article.imageItems.length === 2 ? 'grid-cols-1' :
+                article.imageItems.length === 3 ? 'grid-cols-2' :
+                'grid-cols-3'
+              }`}>
+                {article.imageItems.slice(1).map((item, i) => (
+                  <div key={i}>
+                    <div className='aspect-video rounded-xl overflow-hidden relative'>
+                      <Image
+                        src={item.url}
+                        alt={item.caption || `${article.title} image ${i + 2}`}
+                        fill
+                        className='object-cover'
+                        unoptimized
+                        sizes='(max-width: 768px) 50vw, 33vw'
+                      />
+                    </div>
+                    {item.caption && (
+                      <p className='text-xs text-slate-500 dark:text-slate-400 text-center mt-1 italic'>
+                        {item.caption}
+                      </p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
           </motion.div>
         )}
 
