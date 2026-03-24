@@ -3,25 +3,24 @@
 
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { ArrowLeft, Calendar, Share2 } from "lucide-react";
+import { ArrowLeft, Calendar, Check, Share2 } from "lucide-react";
 import Link from "next/link";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import Image from "next/image";
 import dayjs from "dayjs";
+import { useState } from "react";
 
 interface NewsArticleContentProps {
   slug: string;
 }
 
 export function NewsArticleContent({ slug }: NewsArticleContentProps) {
-  // Fetch the article data using the slug
-  const article = useQuery(api.news.getNewsBySlug, { slug });
+  const [copied, setCopied] = useState(false);
 
-  // Fetch all news for related articles
+  const article = useQuery(api.news.getNewsBySlug, { slug });
   const allNews = useQuery(api.news.getAllNews) || [];
 
-  // Loading state
   if (article === undefined) {
     return (
       <div className='min-h-screen bg-white dark:bg-slate-900 pt-24 flex items-center justify-center'>
@@ -37,7 +36,6 @@ export function NewsArticleContent({ slug }: NewsArticleContentProps) {
     );
   }
 
-  // Article not found
   if (article === null) {
     return (
       <div className='min-h-screen bg-white dark:bg-slate-900 pt-24 flex items-center justify-center'>
@@ -56,23 +54,41 @@ export function NewsArticleContent({ slug }: NewsArticleContentProps) {
     );
   }
 
-  const shareArticle = () => {
-    if (navigator.share) {
-      navigator.share({
-        title: article.title,
-        url: window.location.href,
-      });
-    } else {
-      // Fallback: copy to clipboard
-      navigator.clipboard.writeText(window.location.href);
-      alert("Link copied to clipboard!");
-    }
-  };
-
-  // Get related articles (excluding current article)
   const relatedArticles = allNews
     .filter((a) => a._id !== article._id)
     .slice(0, 2);
+
+  const handleShare = async () => {
+    const url = window.location.href;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: article.title, url });
+        return;
+      } catch (err) {
+        if (err instanceof Error && err.name === "AbortError") return;
+      }
+    }
+
+    // Fallback: copy to clipboard
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(url);
+      } else {
+        const el = document.createElement("textarea");
+        el.value = url;
+        el.style.cssText = "position:fixed;opacity:0;pointer-events:none";
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand("copy");
+        document.body.removeChild(el);
+      }
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    } catch {
+      /* silent */
+    }
+  };
 
   return (
     <article className='min-h-screen bg-white dark:bg-slate-900 pt-24'>
@@ -135,7 +151,6 @@ export function NewsArticleContent({ slug }: NewsArticleContentProps) {
             {article.imageItems.length > 1 && (
               <div className={`grid gap-4 grid-cols-1 ${
                 article.imageItems.length === 2 ? 'sm:grid-cols-2' :
-                article.imageItems.length === 3 ? 'sm:grid-cols-2 xl:grid-cols-3' :
                 'sm:grid-cols-2 xl:grid-cols-3'
               }`}>
                 {article.imageItems.slice(1).map((item, i) => (
@@ -162,15 +177,19 @@ export function NewsArticleContent({ slug }: NewsArticleContentProps) {
           </motion.div>
         )}
 
-        {/* Action Buttons */}
+        {/* Share */}
         <div className='flex flex-wrap gap-4 mb-8'>
           <Button
-            onClick={shareArticle}
+            onClick={handleShare}
             variant='outline'
             size='sm'
-            className='gap-2 dark:hover:text-blue-600'>
-            <Share2 className='h-4 w-4' />
-            Share Article
+            className={`gap-2 cursor-pointer transition-colors ${
+              copied
+                ? 'text-green-600 border-green-500 dark:text-green-400 dark:border-green-500'
+                : ''
+            }`}>
+            {copied ? <Check className='h-4 w-4' /> : <Share2 className='h-4 w-4' />}
+            {copied ? 'Link Copied!' : 'Share Article'}
           </Button>
         </div>
       </motion.header>
@@ -182,7 +201,6 @@ export function NewsArticleContent({ slug }: NewsArticleContentProps) {
         transition={{ duration: 0.6, delay: 0.4 }}
         className='w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-16'>
         <div className='w-full'>
-          {/* Main Content */}
           <div
             className={`
     article-content
@@ -302,9 +320,7 @@ export function NewsArticleContent({ slug }: NewsArticleContentProps) {
                   </h3>
                   <div className='flex items-center gap-4 text-xs text-slate-500 dark:text-slate-500'>
                     <span>
-                      {dayjs(relatedArticle._creationTime).format(
-                        "MMMM DD, YYYY"
-                      )}
+                      {dayjs(relatedArticle._creationTime).format("MMMM DD, YYYY")}
                     </span>
                   </div>
                 </Link>
