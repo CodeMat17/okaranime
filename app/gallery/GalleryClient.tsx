@@ -236,7 +236,7 @@ export default function GalleryClient() {
             Our <span className="text-primary">Gallery</span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Moments captured from our events, programs, and community initiatives.
+            Moments captured from our events, programs, and community initiatives
           </p>
         </motion.div>
 
