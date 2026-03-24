@@ -18,7 +18,7 @@ const navigationItems = [
 
   // { name: "Partners", href: "/partners" },
   { name: "News", href: "/news" },
-  { name: "Gallery", href: "/gallery" },
+  // { name: "Gallery", href: "/gallery" },
   { name: "Team", href: "/team" },
   { name: "Contact", href: "/contact" },
   { name: "Apply", href: "/apply" },
