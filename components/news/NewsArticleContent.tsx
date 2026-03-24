@@ -2,20 +2,23 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { motion } from "framer-motion";
-import { ArrowLeft, Calendar, Share2 } from "lucide-react";
+import { ArrowLeft, Calendar, Check, Copy, Facebook, Mail, MessageCircle, Send, Share2, Twitter } from "lucide-react";
 import Link from "next/link";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import Image from "next/image";
 import dayjs from "dayjs";
 import { toast } from "sonner";
+import { useState } from "react";
 
 interface NewsArticleContentProps {
   slug: string;
 }
 
 export function NewsArticleContent({ slug }: NewsArticleContentProps) {
+  const [copied, setCopied] = useState(false);
 
   const article = useQuery(api.news.getNewsBySlug, { slug });
   const allNews = useQuery(api.news.getAllNews) || [];
@@ -57,20 +60,8 @@ export function NewsArticleContent({ slug }: NewsArticleContentProps) {
     .filter((a) => a._id !== article._id)
     .slice(0, 2);
 
-  const handleShare = async () => {
+  const copyLink = async () => {
     const url = window.location.href;
-
-    if (navigator.share) {
-      try {
-        await navigator.share({ title: article.title, url });
-        return;
-      } catch (err) {
-        if (err instanceof Error && err.name === "AbortError") return;
-        // NotAllowedError or other — fall through to clipboard
-      }
-    }
-
-    // Fallback: copy to clipboard
     try {
       if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(url);
@@ -83,11 +74,56 @@ export function NewsArticleContent({ slug }: NewsArticleContentProps) {
         document.execCommand("copy");
         document.body.removeChild(el);
       }
-      toast.success("Link copied to clipboard!");
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
     } catch {
-      toast.error("Unable to share. Please copy the URL from your browser.");
+      toast.error("Unable to copy link.");
     }
   };
+
+  const handleNativeShare = async () => {
+    const url = window.location.href;
+    try {
+      await navigator.share({ title: article.title, url });
+    } catch (err) {
+      if (err instanceof Error && err.name !== "AbortError") {
+        await copyLink();
+      }
+    }
+  };
+
+  const shareOptions = [
+    {
+      label: "WhatsApp",
+      icon: <MessageCircle className="h-4 w-4" />,
+      color: "hover:bg-green-50 hover:text-green-600 dark:hover:bg-green-950/40 dark:hover:text-green-400",
+      href: () => `https://wa.me/?text=${encodeURIComponent(article.title + " " + window.location.href)}`,
+    },
+    {
+      label: "Twitter / X",
+      icon: <Twitter className="h-4 w-4" />,
+      color: "hover:bg-sky-50 hover:text-sky-600 dark:hover:bg-sky-950/40 dark:hover:text-sky-400",
+      href: () => `https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title)}&url=${encodeURIComponent(window.location.href)}`,
+    },
+    {
+      label: "Facebook",
+      icon: <Facebook className="h-4 w-4" />,
+      color: "hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-950/40 dark:hover:text-blue-400",
+      href: () => `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`,
+    },
+    {
+      label: "Telegram",
+      icon: <Send className="h-4 w-4" />,
+      color: "hover:bg-cyan-50 hover:text-cyan-600 dark:hover:bg-cyan-950/40 dark:hover:text-cyan-400",
+      href: () => `https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(article.title)}`,
+    },
+    {
+      label: "Email",
+      icon: <Mail className="h-4 w-4" />,
+      color: "hover:bg-orange-50 hover:text-orange-600 dark:hover:bg-orange-950/40 dark:hover:text-orange-400",
+      href: () => `mailto:?subject=${encodeURIComponent(article.title)}&body=${encodeURIComponent(window.location.href)}`,
+    },
+  ];
 
   return (
     <article className='min-h-screen bg-white dark:bg-slate-900 pt-24'>
@@ -178,14 +214,49 @@ export function NewsArticleContent({ slug }: NewsArticleContentProps) {
 
         {/* Share */}
         <div className='flex flex-wrap gap-4 mb-8'>
+          {/* Mobile: native share tray */}
           <Button
-            onClick={handleShare}
+            onClick={handleNativeShare}
             variant='outline'
             size='sm'
-            className='gap-2 cursor-pointer'>
+            className='gap-2 cursor-pointer sm:hidden'>
             <Share2 className='h-4 w-4' />
             Share Article
           </Button>
+
+          {/* Desktop: popover with social options */}
+          <div className='hidden sm:block'>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant='outline' size='sm' className='gap-2 cursor-pointer'>
+                  <Share2 className='h-4 w-4' />
+                  Share Article
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className='w-52 p-2' align='start'>
+                <p className='text-xs font-semibold text-muted-foreground px-2 py-1 mb-1'>Share via</p>
+                <div className='space-y-0.5'>
+                  {shareOptions.map((opt) => (
+                    <a
+                      key={opt.label}
+                      href={opt.href()}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                      className={`flex items-center gap-3 px-2 py-2 rounded-md text-sm transition-colors text-slate-700 dark:text-slate-300 ${opt.color}`}>
+                      {opt.icon}
+                      {opt.label}
+                    </a>
+                  ))}
+                  <button
+                    onClick={copyLink}
+                    className='w-full flex items-center gap-3 px-2 py-2 rounded-md text-sm transition-colors text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'>
+                    {copied ? <Check className='h-4 w-4 text-green-500' /> : <Copy className='h-4 w-4' />}
+                    {copied ? 'Copied!' : 'Copy Link'}
+                  </button>
+                </div>
+              </PopoverContent>
+            </Popover>
+          </div>
         </div>
       </motion.header>
 
