@@ -131,12 +131,12 @@ export function NewsArticleContent({ slug }: NewsArticleContentProps) {
                 </p>
               )}
             </div>
-            {/* Additional images strip */}
+            {/* Additional images */}
             {article.imageItems.length > 1 && (
-              <div className={`grid gap-2 ${
-                article.imageItems.length === 2 ? 'grid-cols-1' :
-                article.imageItems.length === 3 ? 'grid-cols-2' :
-                'grid-cols-3'
+              <div className={`grid gap-4 grid-cols-1 ${
+                article.imageItems.length === 2 ? 'sm:grid-cols-2' :
+                article.imageItems.length === 3 ? 'sm:grid-cols-2 xl:grid-cols-3' :
+                'sm:grid-cols-2 xl:grid-cols-3'
               }`}>
                 {article.imageItems.slice(1).map((item, i) => (
                   <div key={i}>
@@ -147,7 +147,7 @@ export function NewsArticleContent({ slug }: NewsArticleContentProps) {
                         fill
                         className='object-cover'
                         unoptimized
-                        sizes='(max-width: 768px) 50vw, 33vw'
+                        sizes='(max-width: 640px) 100vw, 50vw'
                       />
                     </div>
                     {item.caption && (
