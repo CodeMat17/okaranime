@@ -124,7 +124,7 @@ export const addNews = mutation({
   args: {
     title: v.string(),
     content: v.string(),
-    images: v.optional(v.array(v.string())),   // storage IDs, up to 6
+    images: v.optional(v.array(v.string())),   // storage IDs, up to 9
     captions: v.optional(v.array(v.string())), // captions[i] for images[i]
   },
   handler: async (ctx, args) => {

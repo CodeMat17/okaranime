@@ -53,7 +53,7 @@ interface NewsFormProps {
   isEditing?: boolean;
 }
 
-const MAX_IMAGES = 6;
+const MAX_IMAGES = 9;
 
 export function NewsForm({
   initialData,
