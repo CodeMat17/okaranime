@@ -3,20 +3,19 @@
 
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { ArrowLeft, Calendar, Check, Share2 } from "lucide-react";
+import { ArrowLeft, Calendar, Share2 } from "lucide-react";
 import Link from "next/link";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import Image from "next/image";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { toast } from "sonner";
 
 interface NewsArticleContentProps {
   slug: string;
 }
 
 export function NewsArticleContent({ slug }: NewsArticleContentProps) {
-  const [copied, setCopied] = useState(false);
 
   const article = useQuery(api.news.getNewsBySlug, { slug });
   const allNews = useQuery(api.news.getAllNews) || [];
@@ -67,6 +66,7 @@ export function NewsArticleContent({ slug }: NewsArticleContentProps) {
         return;
       } catch (err) {
         if (err instanceof Error && err.name === "AbortError") return;
+        // NotAllowedError or other — fall through to clipboard
       }
     }
 
@@ -83,10 +83,9 @@ export function NewsArticleContent({ slug }: NewsArticleContentProps) {
         document.execCommand("copy");
         document.body.removeChild(el);
       }
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2500);
+      toast.success("Link copied to clipboard!");
     } catch {
-      /* silent */
+      toast.error("Unable to share. Please copy the URL from your browser.");
     }
   };
 
@@ -183,13 +182,9 @@ export function NewsArticleContent({ slug }: NewsArticleContentProps) {
             onClick={handleShare}
             variant='outline'
             size='sm'
-            className={`gap-2 cursor-pointer transition-colors ${
-              copied
-                ? 'text-green-600 border-green-500 dark:text-green-400 dark:border-green-500'
-                : ''
-            }`}>
-            {copied ? <Check className='h-4 w-4' /> : <Share2 className='h-4 w-4' />}
-            {copied ? 'Link Copied!' : 'Share Article'}
+            className='gap-2 cursor-pointer'>
+            <Share2 className='h-4 w-4' />
+            Share Article
           </Button>
         </div>
       </motion.header>
