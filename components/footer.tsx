@@ -112,7 +112,7 @@ export function Footer() {
           viewport={{ once: true }}
           className='mt-8 border-t pt-8 text-center'>
           <p className='text-muted-foreground'>
-            © 2025 OKARANIME HERITAGE FOUNDATION. All Rights Reserved.
+            © 2026 OKARANIME HERITAGE FOUNDATION. All Rights Reserved.
           </p>
         </motion.div>
       </div>
